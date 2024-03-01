@@ -8,7 +8,7 @@ import { Text } from '@/components/text';
 function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text fontWeight="bold" label="asdhalo" />
+      <Text fontWeight="bold" label="asdhalo" variant="extra-larger" />
       <InputText />
     </View>
   );

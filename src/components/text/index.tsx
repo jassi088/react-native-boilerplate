@@ -2,7 +2,7 @@ import React from 'react';
 import { Text as RNText } from 'react-native';
 import { PixelRatio } from 'react-native'
 
-import { FontFamilyType, FontWeightType, TextProps, TextVariantType } from './Text.type';
+import { FontFamilyType, FontWeightType, TextProps, TextVariantType } from './index.type';
 import { cn } from '@/utils';
 
 type TextFontSizeType = '24px' | '20px' | '18px' | '16px' | '14px' | '12px' | '10px';
