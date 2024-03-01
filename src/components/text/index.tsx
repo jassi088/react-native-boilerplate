@@ -5,7 +5,7 @@ import { PixelRatio } from 'react-native'
 import { FontFamilyType, FontWeightType, TextProps, TextVariantType } from './index.type';
 import { cn } from '@/utils';
 
-type TextFontSizeType = '24px' | '20px' | '18px' | '16px' | '14px' | '12px' | '10px';
+type TextFontSizeType = 24 | 20 | 18 | 16 | 14 | 12 | 10;
 
 export const fontFamilyMapper: Record<FontWeightType, FontFamilyType> = {
   'extra-bold': 'Inter-ExtraBold',
@@ -25,15 +25,6 @@ const fontSizeMapper: Record<TextVariantType, TextFontSizeType> = {
   small: 12,
   'extra-small': 10
 };
-
-// const StyledText = styled(RNText) <TextProps>`
-//   font-family: ${(props) => fontFamilyMapper[props.fontWeight || 'regular']};
-//   font-size: ${(props) => fontSizeMapper[props.variant || 'medium']};
-//   font-style: ${({ fontStyle = 'normal' }) => fontStyle};
-//   text-align: ${({ textAlign }) => textAlign || 'left'};
-//   text-decoration: ${({ textDecoration }) => textDecoration || 'none'};
-//   text-transform: ${({ textTransform }) => textTransform || 'none'};
-// `;
 
 export const Text = (props: TextProps) => {
   const { variant = 'medium', fontWeight = 'regular', color, className = '', ...rest } = props;

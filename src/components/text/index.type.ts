@@ -2,12 +2,12 @@ import {ReactElement} from 'react'
 import {TextProps as RNTextProps} from 'react-native'
 
 export type FontFamilyType =
-  | 'Poppins-ExtraBold'
-  | 'Poppins-Bold'
-  | 'Poppins-SemiBold'
-  | 'Poppins-Regular'
-  | 'Poppins-Light'
-  | 'Poppins-Thin'
+  | 'Inter-ExtraBold'
+  | 'Inter-Bold'
+  | 'Inter-SemiBold'
+  | 'Inter-Regular'
+  | 'Inter-Light'
+  | 'Inter-Thin'
 
 export type FontWeightType =
   | 'extra-bold'
