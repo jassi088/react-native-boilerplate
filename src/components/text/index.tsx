@@ -4,6 +4,7 @@ import { PixelRatio } from 'react-native'
 
 import { FontFamilyType, FontWeightType, TextProps, TextVariantType } from './index.type';
 import { cn } from '@/utils';
+import colors from 'tailwindcss/colors';
 
 type TextFontSizeType = 24 | 20 | 18 | 16 | 14 | 12 | 10;
 
@@ -27,16 +28,22 @@ const fontSizeMapper: Record<TextVariantType, TextFontSizeType> = {
 };
 
 export const Text = (props: TextProps) => {
-  const { variant = 'medium', fontWeight = 'regular', color, className = '', ...rest } = props;
+  const { variant = 'medium', fontWeight = 'regular', color, textClassName = '', ...rest } = props;
+
   const fontScale = PixelRatio.getFontScale();
 
   return (
-    <RNText allowFontScaling={false}  {...props} className={cn('text-red-600', className)} style={{
-      fontFamily: fontFamilyMapper[fontWeight],
-      fontSize: fontSizeMapper[variant] / fontScale,
-      textAlign: props.textAlign || 'left',
-      textTransform: props.textTransform || 'none',
-    }}>
+    <RNText
+      allowFontScaling={false}
+      className={cn('text-slate-700', textClassName)} style={{
+        fontFamily: fontFamilyMapper[fontWeight],
+        fontSize: fontSizeMapper[variant] / fontScale,
+        textAlign: props.textAlign || 'left',
+        textTransform: props.textTransform || 'none',
+        color: color ?? colors.gray[600],
+      }}
+      {...rest}
+    >
       {props.label}
     </RNText >
   );

@@ -1,26 +1,28 @@
 import * as React from 'react';
-import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { InputTime } from '@/screens/ui/input-time';
+import { ButtonScreen } from '@/screens/ui/button';
 import { InputText } from '@/components/form';
-import { Text } from '@/components/text';
+import { InputDate } from '@/screens/ui/input-date';
+import { InputCamera } from '@/screens/ui/input-camera';
+import { Slider } from '@/screens/ui/slider';
+import { Home } from '@/screens/ui/home';
+import { RootStackParamList } from './index.type';
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text fontWeight="bold" label="asdhalo" variant="extra-larger" />
-      <InputText />
-    </View>
-  );
-}
-
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Navigator initialRouteName='Home'>
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="InputText" component={InputText} />
+        <Stack.Screen name="InputTime" component={InputTime} />
+        <Stack.Screen name="InputDate" component={InputDate} />
+        <Stack.Screen name="InputCamera" component={InputCamera} />
+        <Stack.Screen name="Slider" component={Slider} />
+        <Stack.Screen name="Button" component={ButtonScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

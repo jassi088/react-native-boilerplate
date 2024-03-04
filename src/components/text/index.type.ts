@@ -42,6 +42,7 @@ export interface TextStyleProps {
   textTransform?: TextTransformType
   textDecoration?: TextDecorationType
   fontStyle?: FontStyleType
+  textClassName?: string
 }
 
 export interface TextProps extends TextStyleProps, RNTextProps {
