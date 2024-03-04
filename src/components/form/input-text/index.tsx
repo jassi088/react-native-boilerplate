@@ -1,6 +1,7 @@
 import { Text } from '@/components/text';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  KeyboardType,
   NativeSyntheticEvent,
   TextInput,
   TextInputFocusEventData,
@@ -22,10 +23,8 @@ interface InputTextInterface {
   numberOfLines?: number;
   maxLength?: number;
   isDisabled?: boolean;
-  isError?: boolean;
   error?: string | undefined;
   isSecureTextEntry?: boolean;
-  onPressSecureText?: (isSecure: boolean) => void;
   prefixIcon?: JSX.Element;
   suffixIcon?: JSX.Element;
   isFocus?: boolean;
@@ -33,6 +32,7 @@ interface InputTextInterface {
   maxHeightTextArea?: number;
   label?: string;
   containerClassName?: string;
+  keyboardType?: KeyboardType
 }
 
 export const InputText = (props: InputTextInterface) => {
@@ -53,18 +53,24 @@ export const InputText = (props: InputTextInterface) => {
     onDelete,
     maxHeightTextArea,
     label,
-    containerClassName
+    containerClassName,
+    keyboardType,
+    isFocus: isFocusProp
   } = props
 
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isFocusProp !== undefined) setIsFocus(isFocusProp)
+  }, [isFocusProp])
 
   return (
     <View className={cn('relative', containerClassName)}>
       {label &&
         <Text label={label} textClassName='mb-1' />
       }
-      <View className={cn('flex flex-row bg-red-50 text-sm border rounded-lg',
+      <View className={cn('flex flex-row text-sm border rounded-lg',
         error ? 'border-red-500' : isFocus ? 'border-blue-500' : 'border-gray-400',
         isDisabled ? 'bg-gray-200' : 'bg-white',
         isDisabled ? 'text-gray-400' : 'text-gray-700',
@@ -84,7 +90,7 @@ export const InputText = (props: InputTextInterface) => {
             onBlur && onBlur(e);
             setIsFocus(false);
           }}
-          keyboardType={isNumerical ? 'number-pad' : undefined}
+          keyboardType={keyboardType}
           multiline={isTextArea}
           numberOfLines={isTextArea ? numberOfLines : 1}
           textAlignVertical={isTextArea ? 'top' : 'center'}

@@ -1,12 +1,10 @@
 import { ScrollView, View } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { InputText } from '@/components/form'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import colors from 'tailwindcss/colors';
 
 export const InputTextScreen = () => {
-  const [value, setValue] = useState<string>('')
-
   return (
     <View className='p-4 bg-gray-50 flex flex-1'>
       <ScrollView>

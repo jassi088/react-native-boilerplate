@@ -1,6 +1,8 @@
 import {ReactElement} from 'react'
 import {TextProps as RNTextProps} from 'react-native'
 
+export type TextFontSizeType = 24 | 20 | 18 | 16 | 14 | 12 | 10;
+
 export type FontFamilyType =
   | 'Inter-ExtraBold'
   | 'Inter-Bold'

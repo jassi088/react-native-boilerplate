@@ -2,11 +2,9 @@ import React from 'react';
 import { Text as RNText } from 'react-native';
 import { PixelRatio } from 'react-native'
 
-import { FontFamilyType, FontWeightType, TextProps, TextVariantType } from './index.type';
+import { FontFamilyType, FontWeightType, TextFontSizeType, TextProps, TextVariantType } from './index.type';
 import { cn } from '@/utils';
 import colors from 'tailwindcss/colors';
-
-type TextFontSizeType = 24 | 20 | 18 | 16 | 14 | 12 | 10;
 
 export const fontFamilyMapper: Record<FontWeightType, FontFamilyType> = {
   'extra-bold': 'Inter-ExtraBold',

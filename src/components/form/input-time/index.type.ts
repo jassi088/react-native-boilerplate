@@ -1,0 +1,1 @@
+export type FormatType = 'HH:mm:ss' | 'HH:mm' | 'mm:ss' | 'HH' | 'mm' | 'ss'; 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { InputTime } from '@/screens/ui/input-time';
+import { InputTimeScreen } from '@/screens/ui/input-time';
 import { ButtonScreen } from '@/screens/ui/button';
 import { InputDate } from '@/screens/ui/input-date';
 import { InputCamera } from '@/screens/ui/input-camera';
@@ -19,7 +19,7 @@ export const Routes = () => {
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="InputText" component={InputTextScreen} />
-        <Stack.Screen name="InputTime" component={InputTime} />
+        <Stack.Screen name="InputTime" component={InputTimeScreen} />
         <Stack.Screen name="InputDate" component={InputDate} />
         <Stack.Screen name="InputCamera" component={InputCamera} />
         <Stack.Screen name="Slider" component={Slider} />
