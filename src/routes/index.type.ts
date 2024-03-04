@@ -6,4 +6,5 @@ export type RootStackParamList = {
   InputCamera: undefined;
   Slider: undefined;
   Button: undefined;
+  ModalConfirmation: undefined;
 }

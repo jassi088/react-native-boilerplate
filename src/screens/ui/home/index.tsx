@@ -17,6 +17,7 @@ export const Home = () => {
         <Button containerClassName="mb-2" label={'Input Camera'} variant="background" onPress={() => navigation.navigate('InputCamera')} />
         <Button containerClassName="mb-2" label={'Button'} variant="background" onPress={() => navigation.navigate('Button')} />
         <Button containerClassName="mb-2" label={'Slider'} variant="background" onPress={() => navigation.navigate('Slider')} />
+        <Button containerClassName="mb-2" label={'Modal Confirmation'} variant="background" onPress={() => navigation.navigate('ModalConfirmation')} />
       </View>
     </ScrollView>
   )
