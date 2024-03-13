@@ -1,4 +1,5 @@
 export type RootStackParamList = {
+  Register: undefined;
   Home: undefined;
   InputText: undefined;
   InputTime: undefined;
@@ -7,4 +8,4 @@ export type RootStackParamList = {
   Slider: undefined;
   Button: undefined;
   ModalConfirmation: undefined;
-}
+};

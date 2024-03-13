@@ -1,11 +1,11 @@
 import { View } from 'react-native'
 import React from 'react'
-import { Text } from '@/components/text'
+import { InputCamera } from '@/components/form'
 
-export const InputCamera = () => {
+export const InputCameraScreen = () => {
   return (
-    <View>
-      <Text label={'InputCamera'} />
+    <View className='flex-1'>
+      <InputCamera />
     </View>
   )
 }
