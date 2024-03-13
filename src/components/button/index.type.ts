@@ -1,7 +1,7 @@
-import { FontWeightType, TextVariantType } from "../text/index.type";
+import { FontWeightType, TextVariantType } from '../text/index.type';
 
 export type ButtonSizeType = 'small' | 'regular';
-export type ButtonVariantType = | 'background' | 'secondary';
+export type ButtonVariantType = 'background' | 'secondary';
 
 export interface ButtonIconInterface {
   leftIcon?: JSX.Element;

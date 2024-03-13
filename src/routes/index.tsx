@@ -11,10 +11,15 @@ import { RootStackParamList } from './index.type';
 import { ModalConfirmationScreen } from '@/screens/ui/modal-confirmation';
 import { InputTextScreen } from '@/screens/ui/input-text';
 import { Register } from '@/screens';
+import { ModalAlert, ModalConfirmation } from '@/components/modal';
+import { useModalAlert, useModalConfirmation } from '@/hooks';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export const Routes = () => {
+  const { modalAlert } = useModalAlert()
+  const { modalConfirmation } = useModalConfirmation()
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Home' screenOptions={{
@@ -30,6 +35,13 @@ export const Routes = () => {
         <Stack.Screen name="Button" component={ButtonScreen} />
         <Stack.Screen name="ModalConfirmation" component={ModalConfirmationScreen} />
       </Stack.Navigator>
+      {modalAlert ?
+        <ModalAlert {...modalAlert} isVisible={modalAlert?.isVisible || false} />
+        : null}
+      {modalConfirmation ?
+        <ModalConfirmation {...modalConfirmation} isVisible={modalConfirmation?.isVisible || false} />
+        : null}
+
     </NavigationContainer>
   );
 }

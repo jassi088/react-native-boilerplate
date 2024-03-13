@@ -13,9 +13,21 @@ export const ActionButton = (props: ActionButtonProps) => {
   const { primaryButtonLabel, secondaryButtonLabel, onPrimaryButtonPress, onSecondaryButtonPress } = props
 
   return (
-    <View className="mx-auto w-[60%]">
-      <Button variant="background" label={primaryButtonLabel} onPress={onPrimaryButtonPress} containerClassName="mb-4" />
-      <Button variant="secondary" label={secondaryButtonLabel} onPress={onSecondaryButtonPress} color={colors.orange[500]} />
+    <View className="flex flex-row items-center justify-center px-5 pt-5 bg-white">
+      <Button
+        variant="secondary"
+        label={secondaryButtonLabel}
+        onPress={onSecondaryButtonPress}
+        color={colors.orange[500]}
+        containerClassName="flex-1"
+      />
+      <View className="w-4" />
+      <Button
+        variant="background"
+        label={primaryButtonLabel}
+        onPress={onPrimaryButtonPress}
+        containerClassName="flex-1"
+      />
     </View>
   )
 }

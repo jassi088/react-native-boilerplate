@@ -167,7 +167,7 @@ export const InputSelect = (props: InputSelectInterface) => {
             )}
           </View>
           <ScrollView>
-            <View className='p-4'>
+            <View className='px-4'>
               {dataFiltered.map((item, index) => (
                 <SelectList
                   isSelected={selectedData?.value === item.value}

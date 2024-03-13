@@ -1,19 +1,82 @@
-import { Image, TouchableOpacity, View } from "react-native"
+import { Button } from "@/components/button"
+import { Text } from "@/components/text"
+import { useCameraSetting, useModalAlert } from "@/hooks"
+import { useEffect, useRef, useState } from "react"
+import { Image, Linking, TouchableOpacity, View } from "react-native"
+import { Camera, useCameraDevice, CameraPosition, CameraProps, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
 
 export const InputCamera = () => {
-  return (
-    <>
-      <View className="flex items-center justify-center flex-1 h-full">
-        <View className="rounded mb-12">
-          <Image
-            source={require('../../../assets/images/result.jpg')}
-            className="w-64 h-64 rounded-md"
+
+  const cameraRef = useRef<Camera>(null)
+
+  const { cameraPosition } = useCameraSetting()
+
+  const { hasPermission, requestPermission } = useCameraPermission()
+  const { showModalAlert, closeModalAlert } = useModalAlert()
+
+  const device: CameraDevice | undefined = useCameraDevice(cameraPosition)
+
+  const getPermission = async () => {
+    try {
+      const _hasPermission = await requestPermission()
+      if (!_hasPermission) {
+        showModalAlert({
+          isVisible: true,
+          title: "Izin Kamera Dibutuhkan",
+          message: "Aplikasi membutuhkan izin kamera untuk dapat mengakses fitur ini.",
+          variant: 'warning',
+          onPress: () => closeModalAlert()
+        })
+      }
+    } catch (error) {
+      showModalAlert({
+        isVisible: true,
+        title: "Gagal Meminta Izin Kamera",
+        message: (error as Error).message || "Terjadi kesalahan saat meminta izin kamera",
+        variant: 'error',
+        onPress: () => closeModalAlert()
+      })
+    }
+
+  }
+
+  useEffect(() => {
+    if (!hasPermission) getPermission()
+  }, [hasPermission])
+
+  if (!device || !hasPermission) {
+    return (
+      <View className="flex items-center justify-center flex-1 h-full mb-12">
+        <View className="w-64 h-64 p-4 rounded-md flex items-center justify-center bg-gray-300">
+          <Text
+            label="Izinkan Kamera terlebih dahulu di Settings"
+            variant="large"
+            textAlign="center"
+            textClassName="mb-4"
+          />
+          <Button
+            label="Buka Setting"
+            variant="secondary"
+            size="small"
+            onPress={() => {
+              Linking.openSettings()
+            }}
           />
         </View>
       </View>
-      <View className="mb-6 bottom-0 left-0 right-0 mx-auto">
-        <TouchableOpacity className="bg-gray-400 rounded-full w-16 h-16" />
+    )
+  }
+
+  return (
+    <View className="flex items-center justify-center flex-1 h-full">
+      <View className="rounded mb-12">
+        <Camera
+          ref={cameraRef}
+          device={device}
+          isActive={true}
+          className="w-64 h-64 rounded-md"
+        />
       </View>
-    </>
+    </View>
   )
 }

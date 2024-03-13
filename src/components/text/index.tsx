@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text as RNText } from 'react-native';
+import { Text as RNText, TextStyle } from 'react-native';
 import { PixelRatio } from 'react-native'
 
 import { FontFamilyType, FontWeightType, TextFontSizeType, TextProps, TextVariantType } from './index.type';
@@ -26,21 +26,27 @@ const fontSizeMapper: Record<TextVariantType, TextFontSizeType> = {
 };
 
 export const Text = (props: TextProps) => {
-  const { variant = 'medium', fontWeight = 'regular', color, textClassName = '', ...rest } = props;
+  const { variant = 'medium', fontWeight = 'regular', color, textAlign, textClassName = '', ...rest } = props;
 
   const fontScale = PixelRatio.getFontScale();
 
   return (
     <RNText
-      allowFontScaling={false}
-      className={cn('text-slate-700', textClassName)} style={{
-        fontFamily: fontFamilyMapper[fontWeight],
-        fontSize: fontSizeMapper[variant] / fontScale,
-        textAlign: props.textAlign || 'left',
-        textTransform: props.textTransform || 'none',
-        color: color ?? colors.gray[600],
-      }}
       {...rest}
+      allowFontScaling={false}
+      className={cn('text-slate-700', textClassName)}
+      style={
+        [
+          {
+            fontFamily: fontFamilyMapper[fontWeight],
+            fontSize: fontSizeMapper[variant] / fontScale,
+            textAlign: textAlign || 'left',
+            textTransform: props.textTransform || 'none',
+            color: color ?? colors.gray[600],
+          },
+          ...(rest.style ? rest.style as [TextStyle] : [])
+        ]
+      }
     >
       {props.label}
     </RNText >
