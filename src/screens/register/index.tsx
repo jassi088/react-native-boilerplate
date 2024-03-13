@@ -34,22 +34,28 @@ export const Register = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      showModalAlert({
-        isVisible: true,
-        title: "Registrasi Berhasil",
-        message: "Registrasi berhasil, Terima kasih.",
-        variant: 'success',
-        onPress: () => {
-          closeModalAlert()
-          navigation.goBack()
-        }
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          showModalAlert({
+            isVisible: true,
+            title: "Registrasi Berhasil",
+            message: "Registrasi berhasil, Terima kasih.",
+            variant: 'success',
+            buttonText: 'Kembali',
+            onPress: () => {
+              closeModalAlert()
+              navigation.goBack()
+            }
+          })
+          resolve(true)
+        }, 2000)
       })
     }
   })
 
   return (
     <>
-      <SafeAreaView className='flex-1'>
+      <SafeAreaView className='flex-1 bg-gray-100'>
         <OrgHeader title='Form Pendaftaran' />
         <View className='flex-1'>
           <ScrollView >
@@ -75,6 +81,7 @@ export const Register = () => {
                       onChangeText={formik.handleChange('nrk')}
                       error={formik.errors.nrk}
                       containerClassName='mb-4'
+                      keyboardType="numeric"
                     />
                   )}
                   {formik.values.tipe_pengunjung === 'non-asn' && (
@@ -85,8 +92,17 @@ export const Register = () => {
                       onChangeText={formik.handleChange('nik')}
                       error={formik.errors.nik}
                       containerClassName='mb-4'
+                      keyboardType="numeric"
                     />
                   )}
+                  <InputText
+                    label='Nama'
+                    placeholder='Masukkan nama'
+                    value={formik.values.nama}
+                    onChangeText={formik.handleChange('nama')}
+                    error={formik.errors.nama}
+                    containerClassName='mb-4'
+                  />
                   <InputText
                     label='No. HP'
                     placeholder='Masukkan No. HP'
@@ -94,6 +110,7 @@ export const Register = () => {
                     onChangeText={formik.handleChange('no_hp')}
                     error={formik.errors.no_hp}
                     containerClassName='mb-4'
+                    keyboardType='numeric'
                   />
                   <InputText
                     label='Email'

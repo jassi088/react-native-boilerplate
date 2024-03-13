@@ -4,7 +4,7 @@ import colors from "tailwindcss/colors"
 
 export const HeaderTitle = ({ title }: { title: string }) => {
   return (
-    <View className='bg-slate-200 px-5 py-3'>
+    <View className='bg-gray-200 px-5 py-3'>
       <Text
         label={title}
         variant='extra-large'

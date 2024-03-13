@@ -1,6 +1,7 @@
 import { View } from "react-native"
 import { Button } from "../button"
 import colors from "tailwindcss/colors"
+import { useKeyboard } from "@react-native-community/hooks"
 
 interface ActionButtonProps {
   primaryButtonLabel: string
@@ -11,6 +12,10 @@ interface ActionButtonProps {
 
 export const ActionButton = (props: ActionButtonProps) => {
   const { primaryButtonLabel, secondaryButtonLabel, onPrimaryButtonPress, onSecondaryButtonPress } = props
+
+  const { keyboardShown } = useKeyboard()
+
+  if (keyboardShown) return null
 
   return (
     <View className="flex flex-row items-center justify-center px-5 pt-5 bg-white">

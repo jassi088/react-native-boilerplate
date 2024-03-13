@@ -32,7 +32,7 @@ const ButtonBase = (props: ButtonBaseProps) => {
       onPress={onPress}
       style={{
         borderWidth: borderWidth ?? 0,
-        borderColor: borderColor ?? colors.slate[400],
+        borderColor: borderColor ?? colors.gray[400],
         backgroundColor: backgroundColor,
         ...height ? { height: Number(height) } : {},
         ...width ? { width: Number(width) } : {},

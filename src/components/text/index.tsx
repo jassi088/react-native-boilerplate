@@ -34,7 +34,7 @@ export const Text = (props: TextProps) => {
     <RNText
       {...rest}
       allowFontScaling={false}
-      className={cn('text-slate-700', textClassName)}
+      className={cn('text-gray-700', textClassName)}
       style={
         [
           {
