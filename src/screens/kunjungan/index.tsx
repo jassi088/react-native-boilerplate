@@ -13,6 +13,7 @@ import { useModalAlert, useModalConfirmation } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import { KEPERLUAN } from '@/constants/keperluan'
+import Toast from 'react-native-toast-message'
 
 type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
@@ -33,17 +34,26 @@ export const Kunjungan = () => {
     onSubmit: (values) => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          showModalAlert({
-            isVisible: true,
-            title: "Registrasi Berhasil",
-            message: "Registrasi berhasil, Terima kasih.",
-            variant: 'success',
-            buttonText: 'Kembali',
-            onPress: () => {
-              closeModalAlert()
-              navigation.goBack()
-            }
-          })
+          if (values.no_hp === '081226696696') {
+            Toast.show({
+              type: 'error',
+              text1: 'Registrasi Gagal',
+              text2: 'No. HP tidak terdaftar, silahkan registrasi terlebih dahulu'
+            })
+          } else {
+            showModalAlert({
+              isVisible: true,
+              title: "Registrasi Berhasil",
+              message: "Registrasi berhasil, Terima kasih.",
+              variant: 'success',
+              buttonText: 'Kembali',
+              onPress: () => {
+                closeModalAlert()
+                navigation.goBack()
+              }
+            })
+          }
+
           resolve(true)
         }, 2000)
       })

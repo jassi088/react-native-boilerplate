@@ -41,7 +41,7 @@ export const BaseToast = (props: BaseToastProps) => {
       <View className="pr-2">
         <FontAwesome6 name={iconVariantMapper[type as BaseVariant]} color={iconColorMapper[type as BaseVariant]} size={24} />
       </View>
-      <View className="space-y-1">
+      <View className="space-y-1 relative flex-1">
         <Text label={text1} variant="large" fontWeight="semi-bold" color={colors.white} />
         <Text label={text2} color={colors.white} />
       </View>
