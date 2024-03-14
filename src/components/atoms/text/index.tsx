@@ -15,7 +15,7 @@ export const fontFamilyMapper: Record<FontWeightType, FontFamilyType> = {
   thin: 'Inter-Thin'
 };
 
-const fontSizeMapper: Record<TextVariantType, TextFontSizeType> = {
+export const fontSizeMapper: Record<TextVariantType, TextFontSizeType> = {
   'ultra-large': 24,
   'extra-larger': 20,
   'extra-large': 18,

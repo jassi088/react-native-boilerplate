@@ -188,7 +188,6 @@ export const InputSelect = (props: InputSelectInterface) => {
             <View className='p-4 flex flex-row items-center'>
               <Button
                 variant="secondary"
-                disabled={!selectedData}
                 label={cancelButtonLabel}
                 onPress={() => {
                   bottomSheetModalRef.current?.close()

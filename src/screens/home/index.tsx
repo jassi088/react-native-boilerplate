@@ -8,6 +8,7 @@ export const Home = () => {
   return (
     <View>
       <Button variant="background" label="register" onPress={() => navigation.navigate('Register')} />
+      <Button variant="background" label="Kunjungan" onPress={() => navigation.navigate('Kunjungan')} />
     </View>
   )
 }

@@ -9,9 +9,9 @@ export const registerSchema = yup.object().shape({
       TIPE_PENGUNJUNG.map((item) => item.value),
       'Tipe Pengunjung tidak valid'
     ),
+  nama: yup.string().required('Nama harus diisi'),
   no_hp: yup.string().required('Nomor Handphone harus diisi'),
   email: yup.string().email('Email tidak valid').required('Email harus diisi'),
-  nama: yup.string().required('Nama harus diisi'),
   nik: yup.string().when('tipe_pengunjung', {
     is: 'non-asn',
     then: (schema) => schema.required('NIK harus diisi'),

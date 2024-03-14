@@ -1,10 +1,7 @@
-import { Text } from '@/components/atoms/text';
+import { Text, fontFamilyMapper, fontSizeMapper } from '@/components/atoms/text';
 import React, { useEffect, useState } from 'react';
 import {
-  KeyboardType,
-  NativeSyntheticEvent,
   TextInput,
-  TextInputFocusEventData,
   TouchableOpacity,
   View
 } from 'react-native';
@@ -12,28 +9,7 @@ import colors from 'tailwindcss/colors'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import { cn } from '@/utils';
-
-interface InputTextInterface {
-  value: string;
-  onChangeText?: (text: string) => void;
-  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  isNumerical?: boolean;
-  isTextArea?: boolean;
-  placeholder?: string;
-  numberOfLines?: number;
-  maxLength?: number;
-  isDisabled?: boolean;
-  error?: string | undefined;
-  isSecureTextEntry?: boolean;
-  prefixIcon?: JSX.Element;
-  suffixIcon?: JSX.Element;
-  isFocus?: boolean;
-  onDelete?: (() => void) | null;
-  maxHeightTextArea?: number;
-  label?: string;
-  containerClassName?: string;
-  keyboardType?: KeyboardType
-}
+import { InputTextInterface } from './index.type';
 
 export const InputText = (props: InputTextInterface) => {
   const {
@@ -55,7 +31,9 @@ export const InputText = (props: InputTextInterface) => {
     label,
     containerClassName,
     keyboardType,
-    isFocus: isFocusProp
+    isFocus: isFocusProp,
+    autoCapitalize,
+    autoCorrect = false
   } = props
 
   const [isFocus, setIsFocus] = useState<boolean>(false);
@@ -74,6 +52,7 @@ export const InputText = (props: InputTextInterface) => {
         error ? 'border-red-500' : isFocus ? 'border-blue-500' : 'border-gray-400',
         isDisabled ? 'bg-gray-200' : 'bg-white',
         isDisabled ? 'text-gray-400' : 'text-gray-700',
+        'p-0 bg-green-50'
       )}>
         {prefixIcon && (
           <TouchableOpacity className='pl-3 flex items-center justify-center'>
@@ -96,9 +75,9 @@ export const InputText = (props: InputTextInterface) => {
           textAlignVertical={isTextArea ? 'top' : 'center'}
           placeholder={placeholder}
           placeholderTextColor={colors.gray[400]}
-          autoCapitalize="none"
+          autoCapitalize={autoCapitalize}
           allowFontScaling={false}
-          autoCorrect={false}
+          autoCorrect={autoCorrect}
           underlineColorAndroid="transparent"
           editable={!isDisabled}
           secureTextEntry={isSecureTextEntry ? showPassword : false}
@@ -106,9 +85,11 @@ export const InputText = (props: InputTextInterface) => {
             setIsFocus(true);
           }}
           style={{
-            maxHeight: isTextArea ? maxHeightTextArea ?? 193 : undefined,
+            maxHeight: isTextArea ? maxHeightTextArea ?? 200 : undefined,
+            fontFamily: fontFamilyMapper['regular'],
+            fontSize: fontSizeMapper['medium'],
           }}
-          className={cn('py-3 px-3 flex-1')}
+          className={'py-2 px-3 flex-1'}
         />
         {onDelete && value !== '' && (
           <TouchableOpacity

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './index.type';
-import { Home, Register } from '@/screens';
+import { Home, Kunjungan, Register } from '@/screens';
 import { ModalAlert, ModalConfirmation } from '@/components/atoms';
 import { useModalAlert, useModalConfirmation } from '@/hooks';
 
@@ -14,11 +14,15 @@ export const Routes = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Home' screenOptions={{
-        headerShown: false
-      }}>
+      <Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={{
+          headerShown: false
+        }}
+      >
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Kunjungan" component={Kunjungan} />
       </Stack.Navigator>
       {modalAlert ?
         <ModalAlert {...modalAlert} isVisible={modalAlert?.isVisible || false} />
