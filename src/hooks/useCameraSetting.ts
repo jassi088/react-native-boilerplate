@@ -16,7 +16,7 @@ interface UseCameraSettingProps {
 
 export const useCameraSetting = create<UseCameraSettingProps>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       cameraPosition: 'front',
       setCameraPosition: (position) => set({ cameraPosition: position }),
       cameraOrientation: 'portrait',

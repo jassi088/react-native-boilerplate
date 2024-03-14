@@ -39,7 +39,7 @@ export const Text = (props: TextProps) => {
         [
           {
             fontFamily: fontFamilyMapper[fontWeight],
-            fontSize: fontSizeMapper[variant] / fontScale,
+            fontSize: fontSizeMapper[variant] * fontScale,
             textAlign: textAlign || 'left',
             textTransform: props.textTransform || 'none',
             color: color ?? colors.gray[600],

@@ -1,9 +1,9 @@
 import { Button } from "@/components/button"
 import { Text } from "@/components/text"
 import { useCameraSetting, useModalAlert } from "@/hooks"
-import { useEffect, useRef, useState } from "react"
-import { Image, Linking, TouchableOpacity, View } from "react-native"
-import { Camera, useCameraDevice, CameraPosition, CameraProps, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
+import { useEffect, useRef } from "react"
+import { Linking, View } from "react-native"
+import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
 
 export const InputCamera = () => {
 

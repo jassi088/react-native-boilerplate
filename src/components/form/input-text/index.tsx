@@ -108,7 +108,7 @@ export const InputText = (props: InputTextInterface) => {
           style={{
             maxHeight: isTextArea ? maxHeightTextArea ?? 193 : undefined,
           }}
-          className={cn('py-2 px-3 flex-1')}
+          className={cn('py-3 px-3 flex-1')}
         />
         {onDelete && value !== '' && (
           <TouchableOpacity

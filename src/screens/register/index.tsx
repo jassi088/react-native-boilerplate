@@ -129,7 +129,16 @@ export const Register = () => {
             primaryButtonLabel='Register'
             secondaryButtonLabel='Kembali'
             onPrimaryButtonPress={() => formik.handleSubmit()}
-            onSecondaryButtonPress={() => navigation.goBack()}
+            onSecondaryButtonPress={() => showModalConfirmation({
+              isVisible: true,
+              title: "Batal Registrasi",
+              message: "Apakah anda yakin ingin membatalkan registrasi?",
+              onConfirm: () => {
+                closeModalConfirmation()
+                navigation.goBack()
+              },
+              onCancel: () => closeModalConfirmation()
+            })}
           />
         </View>
       </SafeAreaView>
