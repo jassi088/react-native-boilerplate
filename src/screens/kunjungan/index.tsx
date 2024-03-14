@@ -24,7 +24,6 @@ export const Kunjungan = () => {
 
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
-      nama: '',
       no_hp: '',
       keperluan: ''
     },
@@ -60,14 +59,6 @@ export const Kunjungan = () => {
             <View className='p-5'>
               <Text label={"Mohon untuk tegak dengan wajah saat menghadap kamera"} textClassName='mb-5' />
               <InputCamera />
-              <InputText
-                label='Nama'
-                placeholder='Masukkan nama'
-                value={formik.values.nama}
-                onChangeText={formik.handleChange('nama')}
-                error={formik.errors.nama}
-                containerClassName='mb-4'
-              />
               <InputText
                 label='No. HP'
                 placeholder='Masukkan No. HP'
