@@ -8,7 +8,7 @@ import {
 import colors from 'tailwindcss/colors'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
-import { cn } from '@/utils';
+import { cn, getFontSizeByScale } from '@/utils';
 import { InputTextInterface } from './index.type';
 
 export const InputText = (props: InputTextInterface) => {
@@ -87,9 +87,10 @@ export const InputText = (props: InputTextInterface) => {
           style={{
             maxHeight: isTextArea ? maxHeightTextArea ?? 200 : undefined,
             fontFamily: fontFamilyMapper['regular'],
-            fontSize: fontSizeMapper['medium'],
+            fontSize: getFontSizeByScale(fontSizeMapper['medium']),
+
           }}
-          className={'py-2 px-3 flex-1'}
+          className={'py-2 px-3 flex-1 text-gray-700'}
         />
         {onDelete && value !== '' && (
           <TouchableOpacity
