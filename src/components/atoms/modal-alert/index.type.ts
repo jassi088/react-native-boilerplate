@@ -1,3 +1,5 @@
+import { BaseVariant } from '@/types';
+
 export interface ModalAlertProps {
   variant: ModalAlertVariantType;
   isVisible: boolean;
@@ -7,4 +9,4 @@ export interface ModalAlertProps {
   buttonText?: string;
 }
 
-export type ModalAlertVariantType = 'success' | 'error' | 'warning' | 'info';
+export type ModalAlertVariantType = BaseVariant;

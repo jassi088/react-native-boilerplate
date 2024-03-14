@@ -4,20 +4,7 @@ import { Modal, View } from "react-native"
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import colors from "tailwindcss/colors";
 import { ModalAlertProps, ModalAlertVariantType } from "./index.type";
-
-const iconVariantMapper: Record<ModalAlertVariantType, string> = {
-  success: 'circle-check',
-  error: 'circle-xmark',
-  warning: 'circle-exclamation',
-  info: 'circle-info'
-}
-
-const iconColorMapper: Record<ModalAlertVariantType, string> = {
-  success: colors.green[500],
-  error: colors.red[500],
-  warning: colors.yellow[500],
-  info: colors.blue[500]
-}
+import { iconColorMapper, iconVariantMapper } from "@/utils/icon-mapper";
 
 export const ModalAlert = (props: ModalAlertProps) => {
   const { message, onPress, isVisible, title, variant, buttonText = 'Ok' } = props
