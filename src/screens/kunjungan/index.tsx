@@ -37,14 +37,14 @@ export const Kunjungan = () => {
           if (values.no_hp === '081226696696') {
             Toast.show({
               type: 'error',
-              text1: 'Registrasi Gagal',
-              text2: 'No. HP tidak terdaftar, silahkan registrasi terlebih dahulu'
+              text1: 'Kunjungan Gagal',
+              text2: 'No. HP tidak terdaftar, silahkan kunjungan terlebih dahulu'
             })
           } else {
             showModalAlert({
               isVisible: true,
-              title: "Registrasi Berhasil",
-              message: "Registrasi berhasil, Terima kasih.",
+              title: "Kunjungan Berhasil",
+              message: "Kunjungan berhasil, Terima kasih.",
               variant: 'success',
               buttonText: 'Kembali',
               onPress: () => {
@@ -105,8 +105,8 @@ export const Kunjungan = () => {
             onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => showModalConfirmation({
               isVisible: true,
-              title: "Batal Registrasi",
-              message: "Apakah anda yakin ingin membatalkan registrasi?",
+              title: "Batal Kunjungan",
+              message: "Apakah anda yakin ingin membatalkan kunjungan?",
               onConfirm: () => {
                 closeModalConfirmation()
                 navigation.goBack()
