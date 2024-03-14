@@ -1,4 +1,4 @@
-import { ModalConfirmationProps } from '@/components/modal/modal-confirmation/index.type';
+import { ModalConfirmationProps } from '@/components/atoms/modal-confirmation/index.type';
 import { create } from 'zustand';
 
 interface UseModalConfirmationProps {

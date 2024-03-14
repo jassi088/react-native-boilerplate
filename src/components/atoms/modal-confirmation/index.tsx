@@ -1,5 +1,5 @@
-import { Button } from "@/components/button";
-import { Text } from "../../text";
+import { Button } from "@/components/atoms/button";
+import { Text } from "../text";
 import { Modal, View } from "react-native"
 import colors from "tailwindcss/colors";
 import { ModalConfirmationProps } from "./index.type";

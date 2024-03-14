@@ -1,6 +1,6 @@
 import { View } from "react-native"
-import { Text } from "../text"
 import colors from "tailwindcss/colors"
+import { Text } from "../../atoms/text"
 
 export const HeaderTitle = ({ title }: { title: string }) => {
   return (

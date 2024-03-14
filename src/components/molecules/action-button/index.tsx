@@ -1,5 +1,5 @@
 import { View } from "react-native"
-import { Button } from "../button"
+import { Button } from "../../atoms/button"
 import colors from "tailwindcss/colors"
 import { useKeyboard } from "@react-native-community/hooks"
 

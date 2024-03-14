@@ -1,4 +1,4 @@
-import { Text } from '@/components/text';
+import { Text } from '@/components/atoms/text';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   TouchableOpacity,
@@ -13,7 +13,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { BottomSheetDefaultBackdropProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetBackdrop/types';
 import Fuse from 'fuse.js'
 import { InputText } from '../input-text';
-import { Button } from '@/components/button';
+import { Button } from '@/components/atoms/button';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks'
 import { ScrollView } from 'react-native-gesture-handler';
 

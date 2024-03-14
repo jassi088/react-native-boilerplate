@@ -1,5 +1,5 @@
-import { Button } from "@/components/button"
-import { Text } from "@/components/text"
+import { Button } from "@/components/atoms/button"
+import { Text } from "@/components/atoms/text"
 import { useCameraSetting, useModalAlert } from "@/hooks"
 import { useEffect, useRef } from "react"
 import { Linking, View } from "react-native"

@@ -1,7 +1,7 @@
 import { View } from "react-native"
-import { HeaderTime, HeaderTitle } from "../molecules"
+import { HeaderTime, HeaderTitle } from "../../molecules"
 
-const Header = ({ title }: { title: string }) => {
+export const Header = ({ title }: { title: string }) => {
   return (
     <View>
       <HeaderTime />
@@ -9,5 +9,3 @@ const Header = ({ title }: { title: string }) => {
     </View>
   )
 }
-
-export default Header

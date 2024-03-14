@@ -1,4 +1,4 @@
-import { ModalAlertProps } from '@/components/modal/modal-alert/index.type';
+import { ModalAlertProps } from '@/components/atoms/modal-alert/index.type';
 import { create } from 'zustand';
 
 interface UseModalAlertProps {

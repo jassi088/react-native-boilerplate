@@ -1,1 +1,1 @@
-export { default as OrgHeader } from './header.organism'
+export * from './header'

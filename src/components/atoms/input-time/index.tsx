@@ -1,4 +1,4 @@
-import { Text } from '@/components/text';
+import { Text } from '@/components/atoms/text';
 import React, { useEffect } from 'react';
 import {
   TouchableOpacity,

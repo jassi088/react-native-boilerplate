@@ -1,5 +1,5 @@
 import { ImageSourcePropType, Image as RNImage } from "react-native"
-import { ImageStaticProps, ImageStaticType } from "./image-static.type";
+import { ImageStaticProps, ImageStaticType } from "./index.type";
 
 export const ImageStatic = (props: ImageStaticProps) => {
   const { name, size = 16, height, width, className, resizeMode } = props

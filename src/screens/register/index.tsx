@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ScrollView, View } from 'react-native'
-import { OrgHeader } from '@/components/organism'
-import { Text } from '@/components/text'
-import { InputCamera, InputSelect, InputText } from '@/components/form'
+import { Text } from '@/components/atoms/text'
+import { InputCamera, InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -11,7 +10,8 @@ import { useFormik } from 'formik'
 import { registerSchema } from '@/yupSchemas'
 import * as yup from 'yup';
 import { useModalAlert, useModalConfirmation } from '@/hooks'
-import { Loader } from '@/components/loader'
+import { Loader } from '@/components/atoms/loader'
+import { Header } from '@/components/organism'
 
 type RegisterPayload = yup.InferType<typeof registerSchema>
 
@@ -56,7 +56,7 @@ export const Register = () => {
   return (
     <>
       <SafeAreaView className='flex-1 bg-gray-100'>
-        <OrgHeader title='Form Pendaftaran' />
+        <Header title='Form Pendaftaran' />
         <View className='flex-1'>
           <ScrollView >
             <View className='p-5'>

@@ -1,7 +1,7 @@
 import { View } from "react-native"
-import { Text } from "../text"
+import { Text } from "../../atoms/text"
 import colors from "tailwindcss/colors"
-import { ImageStatic } from "../atoms"
+import { ImageStatic } from "../../atoms"
 import { memo, useCallback, useEffect, useState } from "react"
 import dayjs from "dayjs"
 import 'dayjs/locale/id'
