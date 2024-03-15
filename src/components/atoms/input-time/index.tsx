@@ -49,7 +49,7 @@ export const InputTime = (props: InputTimeInterface) => {
             {prefixIcon}
           </TouchableOpacity>
         )}
-        <TouchableOpacity className='flex-1 px-3 py-3' onPress={openTimePicker}>
+        <TouchableOpacity className='flex-1 px-3 py-3' disabled={isDisabled} onPress={openTimePicker}>
           <Text
             label={value ? dayjs(value).format(format) : placeholder}
             color={value ? colors.gray[700] : colors.gray[400]}

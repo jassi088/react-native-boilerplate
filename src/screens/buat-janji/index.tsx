@@ -28,6 +28,7 @@ export const BuatJanji = () => {
       no_hp: '',
       no_hp_tujuan: '',
       keperluan: '',
+      keperluan_lainnya: '',
       jam_mulai: '',
       jam_selesai: ''
     },
@@ -103,9 +104,9 @@ export const BuatJanji = () => {
                 <InputText
                   label='Keperluan (Lainnya)'
                   placeholder='Isi Keperluan'
-                  value={formik.values.keperluan}
+                  value={formik.values.keperluan_lainnya as string}
                   onChangeText={formik.handleChange('keperluan_lainnya')}
-                  error={formik.errors.keperluan}
+                  error={formik.errors.keperluan_lainnya}
                   containerClassName='mb-4'
                 />
               )}
@@ -151,6 +152,7 @@ export const BuatJanji = () => {
           />
         </View>
       </SafeAreaView>
+
       <Loader isVisible={formik.isSubmitting} />
     </>
   )

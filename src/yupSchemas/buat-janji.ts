@@ -12,5 +12,10 @@ export const buatJanjiSchema = yup.object().shape({
     .oneOf(
       KEPERLUAN.map((item) => item.value),
       'Keperluan tidak valid'
-    )
+    ),
+  keperluan_lainnya: yup.string().when('keperluan', {
+    is: 'lainnya',
+    then: (schema) => schema.required('Keperluan lainnya harus diisi'),
+    otherwise: (schema) => schema.optional()
+  })
 });

@@ -51,9 +51,8 @@ export const InputText = (props: InputTextInterface) => {
       }
       <View className={cn('flex flex-row text-sm border rounded-lg',
         error ? 'border-red-500' : isFocus ? 'border-blue-500' : 'border-gray-400',
-        isDisabled ? 'bg-gray-200' : 'bg-white',
-        isDisabled ? 'text-gray-400' : 'text-gray-700',
-        'p-0 bg-green-50'
+        isDisabled ? 'text-gray-400 bg-gray-200' : 'bg-white text-gray-700',
+        'p-0'
       )}>
         {prefixIcon && (
           <TouchableOpacity className='pl-3 flex items-center justify-center'>

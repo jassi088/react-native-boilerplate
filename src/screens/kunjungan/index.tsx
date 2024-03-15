@@ -90,9 +90,9 @@ export const Kunjungan = () => {
                 <InputText
                   label='Keperluan (Lainnya)'
                   placeholder='Isi Keperluan'
-                  value={formik.values.keperluan}
+                  value={formik.values.keperluan_lainnya as string}
                   onChangeText={formik.handleChange('keperluan_lainnya')}
-                  error={formik.errors.keperluan}
+                  error={formik.errors.keperluan_lainnya}
                 />
               )}
             </View>
