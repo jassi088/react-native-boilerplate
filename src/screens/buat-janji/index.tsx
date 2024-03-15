@@ -136,13 +136,13 @@ export const BuatJanji = () => {
         </View>
         <View className='pb-5'>
           <ActionButton
-            primaryButtonLabel='Kunjungan'
+            primaryButtonLabel='Buat Janji'
             secondaryButtonLabel='Kembali'
             onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => showModalConfirmation({
               isVisible: true,
-              title: "Batal Kunjungan",
-              message: "Apakah anda yakin ingin membatalkan kunjungan?",
+              title: "Batal Buat Janji",
+              message: "Apakah anda yakin ingin membatalkan buat janji?",
               onConfirm: () => {
                 closeModalConfirmation()
                 navigation.goBack()
