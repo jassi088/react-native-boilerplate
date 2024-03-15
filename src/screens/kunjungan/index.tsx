@@ -38,7 +38,7 @@ export const Kunjungan = () => {
             Toast.show({
               type: 'error',
               text1: 'Kunjungan Gagal',
-              text2: 'No. HP tidak terdaftar, silahkan kunjungan terlebih dahulu'
+              text2: 'No. HP tidak terdaftar, silahkan register terlebih dahulu'
             })
           } else {
             showModalAlert({

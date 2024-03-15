@@ -41,14 +41,14 @@ export const BuatJanji = () => {
           if (values.no_hp === '081226696696') {
             Toast.show({
               type: 'error',
-              text1: 'Kunjungan Gagal',
-              text2: 'No. HP tidak terdaftar, silahkan kunjungan terlebih dahulu'
+              text1: 'Buat Janji Gagal',
+              text2: 'No. HP tidak terdaftar, silahkan register terlebih dahulu'
             })
           } else {
             showModalAlert({
               isVisible: true,
-              title: "Kunjungan Berhasil",
-              message: "Kunjungan berhasil, Terima kasih.",
+              title: "Buat Janji Berhasil",
+              message: "Buat Janji berhasil, Terima kasih.",
               variant: 'success',
               buttonText: 'Kembali',
               onPress: () => {
