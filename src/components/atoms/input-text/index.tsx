@@ -10,6 +10,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import Feather from 'react-native-vector-icons/Feather'
 import { cn, getFontSizeByScale } from '@/utils';
 import { InputTextInterface } from './index.type';
+import { InputErrorMessage } from '../input-error-message';
 
 export const InputText = (props: InputTextInterface) => {
   const {
@@ -114,9 +115,7 @@ export const InputText = (props: InputTextInterface) => {
         )}
       </View>
       {error && (
-        <View className='mt-1'>
-          <Text color={colors.red[500]} label={error} variant="small" />
-        </View>
+        <InputErrorMessage error={error} />
       )}
     </View>
   );

@@ -16,6 +16,7 @@ import { InputText } from '../input-text';
 import { Button } from '@/components/atoms/button';
 import { useBackHandler, useKeyboard } from '@react-native-community/hooks'
 import { ScrollView } from 'react-native-gesture-handler';
+import { InputErrorMessage } from '../input-error-message';
 
 const fuseOptions = {
   includeScore: true,
@@ -123,7 +124,11 @@ export const InputSelect = (props: InputSelectInterface) => {
             {prefixIcon}
           </TouchableOpacity>
         )}
-        <Text label={selectedValue ? selectedValue.label as string : placeholder} className={cn('py-3 px-3 flex-1', selectedValue ? 'text-gray-600' : 'text-gray-400')} />
+        <Text
+          label={selectedValue ? selectedValue.label as string : placeholder}
+          textClassName={cn('py-3 px-3 flex-1')}
+          color={selectedValue ? colors.gray[700] : colors.gray[400]}
+        />
         {onDelete && value !== '' && (
           <TouchableOpacity
             className='pr-3 flex items-center justify-center'
@@ -143,9 +148,7 @@ export const InputSelect = (props: InputSelectInterface) => {
         }
       </TouchableOpacity>
       {error && (
-        <View className='mt-1'>
-          <Text color={colors.red[500]} label={error} variant="small" />
-        </View>
+        <InputErrorMessage error={error} />
       )}
       <BottomSheetModal
         ref={bottomSheetModalRef}

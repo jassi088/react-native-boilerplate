@@ -1,5 +1,5 @@
 import { Text } from '@/components/atoms/text';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TouchableOpacity,
   View
@@ -8,24 +8,10 @@ import colors from 'tailwindcss/colors'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { cn } from '@/utils';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { FormatType } from './index.type';
+import { InputTimeInterface } from './index.type';
 import dayjs from 'dayjs';
-
-interface InputTimeInterface {
-  value: Date | undefined;
-  onChange?: (time: string) => void;
-  placeholder?: string;
-  isDisabled?: boolean;
-  error?: string | undefined;
-  prefixIcon?: JSX.Element;
-  suffixIcon?: JSX.Element;
-  isFocus?: boolean;
-  onDelete?: (() => void) | null;
-  maxHeightTextArea?: number;
-  label?: string;
-  containerClassName?: string;
-  format: FormatType
-}
+import Toast from 'react-native-toast-message';
+import { InputErrorMessage } from '../input-error-message';
 
 export const InputTime = (props: InputTimeInterface) => {
   const {
@@ -39,8 +25,14 @@ export const InputTime = (props: InputTimeInterface) => {
     onDelete,
     label,
     containerClassName,
-    format
+    format,
+    is24Hour = true
   } = props
+
+  const [showTimePicker, setShowTimePicker] = useState<boolean>(false);
+
+  const openTimePicker = () => setShowTimePicker(true);
+  const closeTimePicker = () => setShowTimePicker(false);
 
   return (
     <View className={cn('relative', containerClassName)}>
@@ -57,9 +49,12 @@ export const InputTime = (props: InputTimeInterface) => {
             {prefixIcon}
           </TouchableOpacity>
         )}
-        <View className='flex-1 px-3 py-3'>
-          <Text label={dayjs(value).format(format)} />
-        </View>
+        <TouchableOpacity className='flex-1 px-3 py-3' onPress={openTimePicker}>
+          <Text
+            label={value ? dayjs(value).format(format) : placeholder}
+            color={value ? colors.gray[700] : colors.gray[400]}
+          />
+        </TouchableOpacity>
         {onDelete && value && (
           <TouchableOpacity
             className='pr-3 flex items-center justify-center'
@@ -75,15 +70,26 @@ export const InputTime = (props: InputTimeInterface) => {
         )}
       </View>
       {error && (
-        <View className='mt-1'>
-          <Text color={colors.red[500]} label={error} variant="small" />
-        </View>
+        <InputErrorMessage error={error} />
       )}
-      <DateTimePicker
-        mode='time'
-        value={new Date()}
-        onChange={() => undefined}
-      />
+      {showTimePicker && (
+        <DateTimePicker
+          mode='time'
+          value={value ? dayjs(value).toDate() : dayjs().toDate()}
+          onChange={(_, date) => {
+            if (date) {
+              onChange(date)
+            }
+            closeTimePicker()
+          }}
+          onError={(error) => Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            text2: error.message
+          })}
+          is24Hour={is24Hour}
+        />
+      )}
     </View>
   );
 };
