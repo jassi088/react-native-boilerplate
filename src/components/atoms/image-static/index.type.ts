@@ -1,6 +1,6 @@
 import { ImageResizeMode } from 'react-native';
 
-export type ImageStaticType = 'logo-dki';
+export type ImageStaticType = 'logo-dki' | 'flag-indonesia' | 'flag-usa';
 
 export interface ImageStaticProps {
   name: ImageStaticType;

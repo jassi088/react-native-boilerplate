@@ -10,7 +10,9 @@ export const ImageStatic = (props: ImageStaticProps) => {
   };
 
   const imageName: Record<ImageStaticType, ImageSourcePropType> = {
-    'logo-dki': require('@/assets/images/logo-dki.png')
+    'logo-dki': require('@/assets/images/logo-dki.png'),
+    'flag-indonesia': require('@/assets/images/flag/indonesia.jpg'),
+    'flag-usa': require('@/assets/images/flag/usa.jpg'),
   }
 
   return (

@@ -59,7 +59,7 @@ export const Register = () => {
         <Header title='Form Pendaftaran' />
         <View className='flex-1'>
           <ScrollView >
-            <View className='p-5'>
+            <View className='p-4'>
               <Text label={"Mohon untuk tegak dengan wajah saat menghadap kamera"} textClassName='mb-5' />
               <InputCamera />
               <InputSelect
