@@ -23,18 +23,23 @@ export const Register = () => {
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
   useBackHandler(() => {
-    showModalConfirmation({
-      isVisible: true,
-      title: "Batal Registrasi",
-      message: "Apakah anda yakin ingin membatalkan registrasi?",
-      onConfirm: () => {
-        closeModalConfirmation()
-        navigation.goBack()
-      },
-      onCancel: () => closeModalConfirmation()
-    })
+    const isDirty = formik.dirty
+    if (isDirty) {
+      showModalConfirmation({
+        isVisible: true,
+        title: "Batal Registrasi",
+        message: "Apakah anda yakin ingin membatalkan registrasi?",
+        onConfirm: () => {
+          closeModalConfirmation()
+          navigation.goBack()
+        },
+        onCancel: () => closeModalConfirmation()
+      })
 
-    return true
+      return true
+    }
+
+    return false
   })
 
   const formik = useFormik<RegisterPayload>({
@@ -145,16 +150,23 @@ export const Register = () => {
             primaryButtonLabel='Register'
             secondaryButtonLabel='Kembali'
             onPrimaryButtonPress={() => formik.handleSubmit()}
-            onSecondaryButtonPress={() => showModalConfirmation({
-              isVisible: true,
-              title: "Batal Registrasi",
-              message: "Apakah anda yakin ingin membatalkan registrasi?",
-              onConfirm: () => {
-                closeModalConfirmation()
-                navigation.goBack()
-              },
-              onCancel: () => closeModalConfirmation()
-            })}
+            onSecondaryButtonPress={() => {
+              const isDirty = formik.dirty
+              if (isDirty) {
+                return showModalConfirmation({
+                  isVisible: true,
+                  title: "Batal Registrasi",
+                  message: "Apakah anda yakin ingin membatalkan registrasi?",
+                  onConfirm: () => {
+                    closeModalConfirmation()
+                    navigation.goBack()
+                  },
+                  onCancel: () => closeModalConfirmation()
+                })
+              }
+
+              return navigation.goBack()
+            }}
           />
         </View>
       </SafeAreaView>

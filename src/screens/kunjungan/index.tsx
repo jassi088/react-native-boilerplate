@@ -24,21 +24,6 @@ export const Kunjungan = () => {
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
-  useBackHandler(() => {
-    showModalConfirmation({
-      isVisible: true,
-      title: "Batal Kunjungan",
-      message: "Apakah anda yakin ingin membatalkan kunjungan?",
-      onConfirm: () => {
-        closeModalConfirmation()
-        navigation.goBack()
-      },
-      onCancel: () => closeModalConfirmation()
-    })
-
-    return true
-  })
-
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
       no_hp: '',
@@ -74,6 +59,26 @@ export const Kunjungan = () => {
         }, 2000)
       })
     }
+  })
+
+  useBackHandler(() => {
+    const isDirty = formik.dirty
+
+    if (isDirty) {
+      showModalConfirmation({
+        isVisible: true,
+        title: "Batal Kunjungan",
+        message: "Apakah anda yakin ingin membatalkan kunjungan?",
+        onConfirm: () => {
+          closeModalConfirmation()
+          navigation.goBack()
+        },
+        onCancel: () => closeModalConfirmation()
+      })
+      return true
+    }
+
+    return false
   })
 
   return (
@@ -119,16 +124,23 @@ export const Kunjungan = () => {
             primaryButtonLabel='Kunjungan'
             secondaryButtonLabel='Kembali'
             onPrimaryButtonPress={() => formik.handleSubmit()}
-            onSecondaryButtonPress={() => showModalConfirmation({
-              isVisible: true,
-              title: "Batal Kunjungan",
-              message: "Apakah anda yakin ingin membatalkan kunjungan?",
-              onConfirm: () => {
-                closeModalConfirmation()
-                navigation.goBack()
-              },
-              onCancel: () => closeModalConfirmation()
-            })}
+            onSecondaryButtonPress={() => {
+              const isDirty = formik.dirty
+              if (isDirty) {
+                return showModalConfirmation({
+                  isVisible: true,
+                  title: "Batal Kunjungan",
+                  message: "Apakah anda yakin ingin membatalkan kunjungan?",
+                  onConfirm: () => {
+                    closeModalConfirmation()
+                    navigation.goBack()
+                  },
+                  onCancel: () => closeModalConfirmation()
+                })
+              }
+
+              return navigation.goBack()
+            }}
           />
         </View>
       </SafeAreaView>
