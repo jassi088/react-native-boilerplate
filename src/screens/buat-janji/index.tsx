@@ -14,6 +14,7 @@ import { Header } from '@/components/organism'
 import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
 import dayjs from 'dayjs'
+import { useBackHandler } from '@react-native-community/hooks'
 
 type BuatJanjiPayload = yup.InferType<typeof buatJanjiSchema>
 
@@ -22,6 +23,21 @@ export const BuatJanji = () => {
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
+
+  useBackHandler(() => {
+    showModalConfirmation({
+      isVisible: true,
+      title: "Batal Buat Janji",
+      message: "Apakah anda yakin ingin membatalkan buat janji?",
+      onConfirm: () => {
+        closeModalConfirmation()
+        navigation.goBack()
+      },
+      onCancel: () => closeModalConfirmation()
+    })
+
+    return true
+  })
 
   const formik = useFormik<BuatJanjiPayload>({
     initialValues: {

@@ -12,6 +12,7 @@ import * as yup from 'yup';
 import { useModalAlert, useModalConfirmation } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
+import { useBackHandler } from '@react-native-community/hooks'
 
 type RegisterPayload = yup.InferType<typeof registerSchema>
 
@@ -20,6 +21,21 @@ export const Register = () => {
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
+
+  useBackHandler(() => {
+    showModalConfirmation({
+      isVisible: true,
+      title: "Batal Registrasi",
+      message: "Apakah anda yakin ingin membatalkan registrasi?",
+      onConfirm: () => {
+        closeModalConfirmation()
+        navigation.goBack()
+      },
+      onCancel: () => closeModalConfirmation()
+    })
+
+    return true
+  })
 
   const formik = useFormik<RegisterPayload>({
     initialValues: {

@@ -14,6 +14,7 @@ import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
+import { useBackHandler } from '@react-native-community/hooks'
 
 type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
@@ -22,6 +23,21 @@ export const Kunjungan = () => {
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
+
+  useBackHandler(() => {
+    showModalConfirmation({
+      isVisible: true,
+      title: "Batal Kunjungan",
+      message: "Apakah anda yakin ingin membatalkan kunjungan?",
+      onConfirm: () => {
+        closeModalConfirmation()
+        navigation.goBack()
+      },
+      onCancel: () => closeModalConfirmation()
+    })
+
+    return true
+  })
 
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
