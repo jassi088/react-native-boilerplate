@@ -155,7 +155,7 @@ export const BuatJanji = () => {
             </View>
           </ScrollView>
         </View>
-        <View className='pb-5'>
+        <View>
           <ActionButton
             primaryButtonLabel='Buat Janji'
             secondaryButtonLabel='Kembali'

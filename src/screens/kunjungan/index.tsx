@@ -119,7 +119,7 @@ export const Kunjungan = () => {
             </View>
           </ScrollView>
         </View>
-        <View className='pb-5'>
+        <View>
           <ActionButton
             primaryButtonLabel='Kunjungan'
             secondaryButtonLabel='Kembali'

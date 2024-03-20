@@ -1,4 +1,4 @@
-import { View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 import { Text } from "../../atoms/text"
 import colors from "tailwindcss/colors"
 import { ImageStatic } from "../../atoms"
@@ -6,7 +6,13 @@ import { memo, useCallback, useEffect, useState } from "react"
 import dayjs from "dayjs"
 import 'dayjs/locale/id'
 
-export const HeaderTime = memo(() => {
+interface HeaderTimeProps {
+  onPress?: () => void
+}
+
+export const HeaderTime = memo((props: HeaderTimeProps) => {
+  const { onPress } = props
+
   const [time, setTime] = useState<string>("")
   const [date, setDate] = useState<string>("")
 
@@ -43,7 +49,9 @@ export const HeaderTime = memo(() => {
           fontWeight="regular"
         />
       </View>
-      <ImageStatic name="logo-dki" size={50} resizeMode="contain" />
+      <TouchableOpacity disabled={onPress ? false : true} onPress={onPress}>
+        <ImageStatic name="logo-dki" size={50} resizeMode="contain" />
+      </TouchableOpacity>
     </View>
   )
 })

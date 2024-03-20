@@ -145,7 +145,7 @@ export const Register = () => {
             </View>
           </ScrollView>
         </View>
-        <View className='pb-5'>
+        <View>
           <ActionButton
             primaryButtonLabel='Register'
             secondaryButtonLabel='Kembali'

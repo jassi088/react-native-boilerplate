@@ -3,4 +3,5 @@ export type RootStackParamList = {
   Home: undefined;
   Kunjungan: undefined;
   BuatJanji: undefined;
+  Setting: undefined;
 };

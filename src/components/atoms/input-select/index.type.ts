@@ -1,5 +1,5 @@
 export interface InputSelectInterface {
-  value: string;
+  value: string | number;
   onChange: (data: InputSelectData) => void;
   data: InputSelectData[];
   placeholder?: string;

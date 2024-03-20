@@ -33,7 +33,9 @@ export const Home = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <HeaderTime />
+      <HeaderTime
+        onPress={() => navigation.navigate('Setting')}
+      />
       <View className="space-y-5 p-4 flex-1">
         <View
           className="flex flex-1 mb-5"

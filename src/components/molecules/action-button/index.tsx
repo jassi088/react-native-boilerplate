@@ -18,7 +18,7 @@ export const ActionButton = (props: ActionButtonProps) => {
   if (keyboardShown) return null
 
   return (
-    <View className="flex flex-row items-center justify-center px-4 pt-4 bg-white">
+    <View className="flex flex-row items-center justify-center px-4 py-4 bg-white">
       <Button
         variant="secondary"
         label={secondaryButtonLabel}

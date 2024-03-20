@@ -3,13 +3,14 @@ import { Text } from "@/components/atoms/text"
 import { useCameraSetting, useModalAlert } from "@/hooks"
 import { useEffect, useRef } from "react"
 import { Linking, View } from "react-native"
+import Toast from "react-native-toast-message"
 import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
 
 export const InputCamera = () => {
 
   const cameraRef = useRef<Camera>(null)
 
-  const { cameraPosition } = useCameraSetting()
+  const { cameraPosition, cameraOrientation } = useCameraSetting()
 
   const { hasPermission, requestPermission } = useCameraPermission()
   const { showModalAlert, closeModalAlert } = useModalAlert()
@@ -75,6 +76,12 @@ export const InputCamera = () => {
           device={device}
           isActive={true}
           className="w-64 h-64 rounded-md"
+          orientation={cameraOrientation}
+          onError={(error) => Toast.show({
+            type: 'error',
+            text1: 'Something went wrong on Camera!',
+            text2: error.message
+          })}
         />
       </View>
     </View>
