@@ -3,12 +3,16 @@
   "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
   "label": {
     "visitorType": "Tipe Pengunjung",
+    "name": "Nama",
+    "nrk": "NRK",
     "nik": "NIK",
     "phone": "No. HP",
     "email": "Email"
   },
   "placeholder": {
-    "visitortType": "Select Tipe Pengunjung",
+    "visitorType": "Select Tipe Pengunjung",
+    "name": "Masukkan Nama",
+    "nrk": "Masukkan NRK",
     "nik": "Masukkan NIK",
     "phone": "Masukkan No. HP",
     "email": "Masukkan Email"
@@ -23,6 +27,12 @@
     "button": {
       "yes": "Yakin",
       "no": "Batal"
+    }
+  },
+  "alert": {
+    "success": {
+      "title": "Registrasi Berhasil",
+      "message": "Registrasi berhasil dilakukan, Terima Kasih"
     }
   }
 }

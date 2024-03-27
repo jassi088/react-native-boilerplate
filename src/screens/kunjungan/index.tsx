@@ -5,7 +5,6 @@ import { InputCamera, InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { TIPE_PENGUNJUNG } from '@/constants/tipe-pengunjung'
 import { useFormik } from 'formik'
 import { kunjunganSchema } from '@/yupSchemas'
 import * as yup from 'yup';
@@ -15,11 +14,13 @@ import { Header } from '@/components/organism'
 import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
 import { useBackHandler } from '@react-native-community/hooks'
+import { useTranslation } from 'react-i18next'
 
 type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
 export const Kunjungan = () => {
   const navigation = useNavigation()
+  const { t } = useTranslation(['visit', 'common'])
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
@@ -38,16 +39,16 @@ export const Kunjungan = () => {
           if (values.no_hp === '081226696696') {
             Toast.show({
               type: 'error',
-              text1: 'Kunjungan Gagal',
-              text2: 'No. HP tidak terdaftar, silahkan register terlebih dahulu'
+              text1: t('visit:alert.notRegistered.title'),
+              text2: t('visit:alert.notRegistered.message')
             })
           } else {
             showModalAlert({
               isVisible: true,
-              title: "Kunjungan Berhasil",
-              message: "Kunjungan berhasil, Terima kasih.",
+              title: t('visit:alert.success.title'),
+              message: t('visit:alert.success.message'),
               variant: 'success',
-              buttonText: 'Kembali',
+              buttonText: t('common:button.back'),
               onPress: () => {
                 closeModalAlert()
                 navigation.goBack()
@@ -67,8 +68,8 @@ export const Kunjungan = () => {
     if (isDirty) {
       showModalConfirmation({
         isVisible: true,
-        title: "Batal Kunjungan",
-        message: "Apakah anda yakin ingin membatalkan kunjungan?",
+        title: t('visit:modalConfirmation.title'),
+        message: t('visit:modalConfirmation.description'),
         onConfirm: () => {
           closeModalConfirmation()
           navigation.goBack()
@@ -84,15 +85,18 @@ export const Kunjungan = () => {
   return (
     <>
       <SafeAreaView className='flex-1 bg-gray-100'>
-        <Header title='Form Kunjungan' />
+        <Header title={t('visit:title')} />
         <View className='flex-1'>
           <ScrollView >
             <View className='p-4'>
-              <Text label={"Mohon untuk tegak dengan wajah saat menghadap kamera"} textClassName='mb-5' />
+              <Text
+                label={t('visit:description')}
+                textClassName='mb-5'
+              />
               <InputCamera />
               <InputText
-                label='No. HP'
-                placeholder='Masukkan No. HP'
+                label={t('visit:label.phone')}
+                placeholder={t('visit:placeholder.phone')}
                 value={formik.values.no_hp}
                 onChangeText={formik.handleChange('no_hp')}
                 error={formik.errors.no_hp}
@@ -100,8 +104,8 @@ export const Kunjungan = () => {
                 keyboardType='numeric'
               />
               <InputSelect
-                label='Keperluan'
-                placeholder='Pilih Keperluan'
+                label={t('visit:label.needs')}
+                placeholder={t('visit:placeholder.needs')}
                 value={formik.values.keperluan}
                 onChange={data => formik.setFieldValue('keperluan', data.value)}
                 error={formik.errors.keperluan}
@@ -109,8 +113,8 @@ export const Kunjungan = () => {
               />
               {formik.values.keperluan === 'lainnya' && (
                 <InputText
-                  label='Keperluan (Lainnya)'
-                  placeholder='Isi Keperluan'
+                  label={t('visit:label.other')}
+                  placeholder={t('visit:placeholder.other')}
                   value={formik.values.keperluan_lainnya as string}
                   onChangeText={formik.handleChange('keperluan_lainnya')}
                   error={formik.errors.keperluan_lainnya}
@@ -122,16 +126,16 @@ export const Kunjungan = () => {
         </View>
         <View>
           <ActionButton
-            primaryButtonLabel='Kunjungan'
-            secondaryButtonLabel='Kembali'
+            primaryButtonLabel={t('visit:button.visit')}
+            secondaryButtonLabel={t('visit:button.back')}
             onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
                 return showModalConfirmation({
                   isVisible: true,
-                  title: "Batal Kunjungan",
-                  message: "Apakah anda yakin ingin membatalkan kunjungan?",
+                  title: t('visit:modalConfirmation.title'),
+                  message: t('visit:modalConfirmation.description'),
                   onConfirm: () => {
                     closeModalConfirmation()
                     navigation.goBack()

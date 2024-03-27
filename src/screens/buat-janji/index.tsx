@@ -15,11 +15,13 @@ import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
 import dayjs from 'dayjs'
 import { useBackHandler } from '@react-native-community/hooks'
+import { useTranslation } from 'react-i18next'
 
 type BuatJanjiPayload = yup.InferType<typeof buatJanjiSchema>
 
 export const BuatJanji = () => {
   const navigation = useNavigation()
+  const { t } = useTranslation(['visit', 'common'])
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
@@ -29,8 +31,8 @@ export const BuatJanji = () => {
     if (isDirty) {
       showModalConfirmation({
         isVisible: true,
-        title: "Batal Buat Janji",
-        message: "Apakah anda yakin ingin membatalkan buat janji?",
+        title: t('appointment:modalConfirmation.title'),
+        message: t('appointment:modalConfirmation.description'),
         onConfirm: () => {
           closeModalConfirmation()
           navigation.goBack()
@@ -62,16 +64,16 @@ export const BuatJanji = () => {
           if (values.no_hp === '081226696696') {
             Toast.show({
               type: 'error',
-              text1: 'Buat Janji Gagal',
-              text2: 'No. HP tidak terdaftar, silahkan register terlebih dahulu'
+              text1: t('appointment:alert.notRegistered.title'),
+              text2: t('appointment:alert.notRegistered.message')
             })
           } else {
             showModalAlert({
               isVisible: true,
-              title: "Buat Janji Berhasil",
-              message: "Buat Janji berhasil, Terima kasih.",
+              title: t('appointment:alert.success.title'),
+              message: t('appointment:alert.success.message'),
               variant: 'success',
-              buttonText: 'Kembali',
+              buttonText: t('common:button.back'),
               onPress: () => {
                 closeModalAlert()
                 navigation.goBack()
@@ -88,15 +90,18 @@ export const BuatJanji = () => {
   return (
     <>
       <SafeAreaView className='flex-1 bg-gray-100'>
-        <Header title='Form Buat Janji' />
+        <Header title={t('appointment:title')} />
         <View className='flex-1'>
           <ScrollView >
             <View className='p-4'>
-              <Text label={"Mohon untuk tegak dengan wajah saat menghadap kamera"} textClassName='mb-5' />
+              <Text
+                label={t('appointment:description')}
+                textClassName='mb-5'
+              />
               <InputCamera />
               <InputText
-                label='No. HP Anda'
-                placeholder='Masukkan No. HP Anda'
+                label={t('appointment:label.phone')}
+                placeholder={t('appointment:placeholder.phone')}
                 value={formik.values.no_hp}
                 onChangeText={formik.handleChange('no_hp')}
                 error={formik.errors.no_hp}
@@ -104,8 +109,8 @@ export const BuatJanji = () => {
                 keyboardType='numeric'
               />
               <InputText
-                label='No. HP Tujuan'
-                placeholder='Masukkan No. HP Tujuan'
+                label={t('appointment:label.phoneDestination')}
+                placeholder={t('appointment:placeholder.phoneDestination')}
                 value={formik.values.no_hp_tujuan}
                 onChangeText={formik.handleChange('no_hp_tujuan')}
                 error={formik.errors.no_hp_tujuan}
@@ -113,8 +118,8 @@ export const BuatJanji = () => {
                 keyboardType='numeric'
               />
               <InputSelect
-                label='Keperluan'
-                placeholder='Pilih Keperluan'
+                label={t('appointment:label.needs')}
+                placeholder={t('appointment:placeholder.needs')}
                 value={formik.values.keperluan}
                 onChange={data => formik.setFieldValue('keperluan', data.value)}
                 error={formik.errors.keperluan}
@@ -123,8 +128,8 @@ export const BuatJanji = () => {
               />
               {formik.values.keperluan === 'lainnya' && (
                 <InputText
-                  label='Keperluan (Lainnya)'
-                  placeholder='Isi Keperluan'
+                  label={t('appointment:label.other')}
+                  placeholder={t('appointment:placeholder.other')}
                   value={formik.values.keperluan_lainnya as string}
                   onChangeText={formik.handleChange('keperluan_lainnya')}
                   error={formik.errors.keperluan_lainnya}
@@ -133,9 +138,9 @@ export const BuatJanji = () => {
               )}
               <View className='flex flex-row items-center'>
                 <InputTime
-                  label='Jam Mulai'
+                  label={t('appointment:label.startHour')}
+                  placeholder={t('appointment:placeholder.startHour')}
                   containerClassName='flex-1'
-                  placeholder="Jam Mulai"
                   format='HH:mm'
                   value={formik.values.jam_mulai ? dayjs(formik.values.jam_mulai).toDate() : undefined}
                   onChange={value => formik.setFieldValue('jam_mulai', dayjs(value).toISOString())}
@@ -143,9 +148,9 @@ export const BuatJanji = () => {
                 />
                 <View className='w-4' />
                 <InputTime
-                  label='Jam Selesai'
+                  label={t('appointment:label.endHour')}
+                  placeholder={t('appointment:placeholder.endHour')}
                   containerClassName='flex-1'
-                  placeholder='Jam Selesai'
                   format='HH:mm'
                   value={formik.values.jam_selesai ? dayjs(formik.values.jam_selesai).toDate() : undefined}
                   onChange={value => formik.setFieldValue('jam_selesai', dayjs(value).toISOString())}
@@ -157,16 +162,16 @@ export const BuatJanji = () => {
         </View>
         <View>
           <ActionButton
-            primaryButtonLabel='Buat Janji'
-            secondaryButtonLabel='Kembali'
+            primaryButtonLabel={t('appointment:button.appointment')}
+            secondaryButtonLabel={t('appointment:button.back')}
             onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
                 return showModalConfirmation({
                   isVisible: true,
-                  title: "Batal Buat Janji",
-                  message: "Apakah anda yakin ingin membatalkan buat janji?",
+                  title: t('appointment:modalConfirmation.title'),
+                  message: t('appointment:modalConfirmation.description'),
                   onConfirm: () => {
                     closeModalConfirmation()
                     navigation.goBack()
@@ -180,7 +185,6 @@ export const BuatJanji = () => {
           />
         </View>
       </SafeAreaView>
-
       <Loader isVisible={formik.isSubmitting} />
     </>
   )

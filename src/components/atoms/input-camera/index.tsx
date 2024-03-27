@@ -2,12 +2,13 @@ import { Button } from "@/components/atoms/button"
 import { Text } from "@/components/atoms/text"
 import { useCameraSetting, useModalAlert } from "@/hooks"
 import { useEffect, useRef } from "react"
+import { useTranslation } from "react-i18next"
 import { Linking, View } from "react-native"
 import Toast from "react-native-toast-message"
 import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
 
 export const InputCamera = () => {
-
+  const { t } = useTranslation(['input'])
   const cameraRef = useRef<Camera>(null)
 
   const { cameraPosition, cameraOrientation } = useCameraSetting()
@@ -50,13 +51,13 @@ export const InputCamera = () => {
       <View className="flex items-center justify-center flex-1 h-full mb-12">
         <View className="w-64 h-64 p-4 rounded-md flex items-center justify-center bg-gray-300">
           <Text
-            label="Izinkan Kamera terlebih dahulu di Settings"
+            label={t('input:camera.noPermission')}
             variant="large"
             textAlign="center"
             textClassName="mb-4"
           />
           <Button
-            label="Buka Setting"
+            label={t('input:camera.openSettings')}
             variant="secondary"
             size="small"
             onPress={() => {

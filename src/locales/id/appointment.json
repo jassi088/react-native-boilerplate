@@ -28,5 +28,15 @@
       "yes": "Yakin",
       "no": "Batal"
     }
+  },
+  "alert": {
+    "success": {
+      "title": "Berhasil",
+      "message": "Janji anda berhasil dibuat"
+    },
+    "notRegistered": {
+      "title": "Registrasi Gagal",
+      "message": "No. HP belum terdaftar, silahkan registrasi terlebih dahulu"
+    }
   }
 }

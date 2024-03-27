@@ -22,5 +22,15 @@
       "yes": "Yakin",
       "no": "Batal"
     }
+  },
+  "alert": {
+    "success": {
+      "title": "Kunjungan Berhasil",
+      "message": "Terima kasih, kunjungan anda telah tercatat"
+    },
+    "notRegistered": {
+      "title": "Registrasi Gagal",
+      "message": "No. HP belum terdaftar, silahkan registrasi terlebih dahulu"
+    }
   }
 }

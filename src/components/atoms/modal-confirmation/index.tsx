@@ -4,9 +4,12 @@ import { Modal, View } from "react-native"
 import colors from "tailwindcss/colors";
 import { ModalConfirmationProps } from "./index.type";
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from "react-i18next";
 
 export const ModalConfirmation = (props: ModalConfirmationProps) => {
-  const { message, onConfirm, onCancel, isVisible, title, cancelText = 'Batal', confirmText = 'Yakin' } = props
+  const { t } = useTranslation(['common'])
+
+  const { message, onConfirm, onCancel, isVisible, title, cancelText, confirmText } = props
 
   return (
     <Modal
@@ -34,25 +37,27 @@ export const ModalConfirmation = (props: ModalConfirmationProps) => {
               textClassName="mb-5"
             />
           </View>
-          <View className="flex flex-row items-center">
+          <View className="flex flex-row items-center px-2">
             <Button
-              label={cancelText}
+              label={cancelText ? cancelText : t('common:button.cancel')}
               variant='secondary'
               size='small'
               onPress={onCancel}
               color={colors.gray[500]}
               fontSize="medium"
               leftIcon={<Ionicons name="close-circle-outline" size={20} color={colors.gray[500]} />}
+              containerClassName="flex-1"
             />
             <View className="w-2" />
             <Button
-              label={confirmText}
+              label={confirmText ? confirmText : t('common:button.yes')}
               variant="background"
               size='small'
               onPress={onConfirm}
               color={colors.blue[500]}
               fontSize="medium"
               leftIcon={<Ionicons name="checkmark-circle-outline" size={20} color={colors.blue[200]} />}
+              containerClassName="flex-1"
             />
           </View>
         </View>

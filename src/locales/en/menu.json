@@ -1,5 +1,6 @@
 {
-  "register": "register",
+  "register": "Register",
   "visit": "Visit",
-  "apointment": "Apointment"
+  "appointment": "Appointment",
+  "chooseLanguage": "Choose Language:"
 }

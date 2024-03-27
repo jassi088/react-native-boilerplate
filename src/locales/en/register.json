@@ -3,12 +3,16 @@
   "description": "Please stand up straight and face the camera",
   "label": {
     "visitorType": "Visitor Type",
+    "name": "Name",
+    "nrk": "NRK",
     "nik": "NIK",
     "phone": "Phone",
     "email": "Email"
   },
   "placeholder": {
-    "visitortType": "Select Visitor Type",
+    "visitorType": "Select Visitor Type",
+    "name": "Enter Name",
+    "nrk": "Enter NRK",
     "nik": "Enter NIK",
     "phone": "Enter Phone",
     "email": "Enter Email"
@@ -23,6 +27,12 @@
     "button": {
       "yes": "Yes",
       "no": "No"
+    }
+  },
+  "alert": {
+    "success": {
+      "title": "Registration Success",
+      "message": "You have successfully registered"
     }
   }
 }

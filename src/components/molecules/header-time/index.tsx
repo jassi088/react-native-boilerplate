@@ -5,6 +5,8 @@ import { ImageStatic } from "../../atoms"
 import { memo, useCallback, useEffect, useState } from "react"
 import dayjs from "dayjs"
 import 'dayjs/locale/id'
+import 'dayjs/locale/en'
+import { useTranslation } from "react-i18next"
 
 interface HeaderTimeProps {
   onPress?: () => void
@@ -12,13 +14,14 @@ interface HeaderTimeProps {
 
 export const HeaderTime = memo((props: HeaderTimeProps) => {
   const { onPress } = props
+  const { i18n } = useTranslation([]);
 
   const [time, setTime] = useState<string>("")
   const [date, setDate] = useState<string>("")
 
   const getDateTime = useCallback(() => {
     setTime(dayjs().format("HH:mm"))
-    setDate(dayjs().locale('id').format("dddd, DD MMMM YYYY"))
+    setDate(dayjs().locale(i18n.language).format("dddd, DD MMMM YYYY"))
   }, [])
 
   useEffect(() => {
@@ -48,6 +51,7 @@ export const HeaderTime = memo((props: HeaderTimeProps) => {
           variant="large"
           fontWeight="regular"
         />
+
       </View>
       <TouchableOpacity disabled={onPress ? false : true} onPress={onPress}>
         <ImageStatic name="logo-dki" size={50} resizeMode="contain" />

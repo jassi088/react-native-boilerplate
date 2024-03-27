@@ -22,5 +22,15 @@
       "yes": "Yes",
       "no": "No"
     }
+  },
+  "alert": {
+    "success": {
+      "title": "Visit Success",
+      "message": "Visit has been successfully recorded"
+    },
+    "notRegistered": {
+      "title": "Phone not registered",
+      "message": "Phone number is not registered"
+    }
   }
 }

@@ -2,12 +2,12 @@ import { ImageSlider, LanguageSwitcher, Text } from "@/components/atoms"
 import { HeaderTime } from "@/components/molecules"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
+import { useTranslation } from "react-i18next"
 import { TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import Entypo from 'react-native-vector-icons/Entypo'
 import colors from "tailwindcss/colors"
-import { number } from "yup"
 
 type CardProps = {
   label: string
@@ -17,6 +17,7 @@ type CardProps = {
 
 export const Home = () => {
   const navigation = useNavigation()
+  const { t } = useTranslation(["menu"])
 
   const [sliderHeight, setSliderHeight] = useState<number>(0)
 
@@ -49,14 +50,14 @@ export const Home = () => {
           />
         </View>
         <Card
-          label="Registrasi"
+          label={t('menu:register')}
           icon={<AntDesign name="adduser" size={40} color={colors.blue[600]} />}
           onPress={() => navigation.navigate('Register')}
         />
         <View className="flex flex-row items-center mb-4">
           <View className="flex-1">
             <Card
-              label="Kunjungan"
+              label={t('menu:visit')}
               icon={<AntDesign name="calendar" size={40} color={colors.blue[600]} />}
               onPress={() => navigation.navigate('Kunjungan')}
             />
@@ -64,7 +65,7 @@ export const Home = () => {
           <View className="w-4" />
           <View className="flex-1">
             <Card
-              label="Buat Janji"
+              label={t('menu:appointment')}
               icon={<Entypo name="add-to-list" size={40} color={colors.blue[600]} />}
               onPress={() => navigation.navigate('BuatJanji')}
             />

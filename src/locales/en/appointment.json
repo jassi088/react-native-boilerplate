@@ -28,5 +28,15 @@
       "yes": "Yes",
       "no": "No"
     }
+  },
+  "alert": {
+    "success": {
+      "title": "Appointment Created",
+      "description": "Appointment has been successfully created"
+    },
+    "notRegistered": {
+      "title": "Phone not registered",
+      "message": "Phone number is not registered"
+    }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "camera": {
+    "noPermission": "Please allow camera access in your phone settings",
+    "openSettings": "Open Settings"
+  }
+}

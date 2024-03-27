@@ -13,11 +13,13 @@ import { useModalAlert, useModalConfirmation } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import { useBackHandler } from '@react-native-community/hooks'
+import { useTranslation } from 'react-i18next'
 
 type RegisterPayload = yup.InferType<typeof registerSchema>
 
 export const Register = () => {
   const navigation = useNavigation()
+  const { t } = useTranslation(['register', 'common'])
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
@@ -27,8 +29,8 @@ export const Register = () => {
     if (isDirty) {
       showModalConfirmation({
         isVisible: true,
-        title: "Batal Registrasi",
-        message: "Apakah anda yakin ingin membatalkan registrasi?",
+        title: t('register:modalConfirmation.title'),
+        message: t('register:modalConfirmation.description'),
         onConfirm: () => {
           closeModalConfirmation()
           navigation.goBack()
@@ -59,10 +61,10 @@ export const Register = () => {
         setTimeout(() => {
           showModalAlert({
             isVisible: true,
-            title: "Registrasi Berhasil",
-            message: "Registrasi berhasil, Terima kasih.",
+            title: t('register:alert.title'),
+            message: t('register:alert.message'),
             variant: 'success',
-            buttonText: 'Kembali',
+            buttonText: t('common:button.back'),
             onPress: () => {
               closeModalAlert()
               navigation.goBack()
@@ -77,15 +79,18 @@ export const Register = () => {
   return (
     <>
       <SafeAreaView className='flex-1 bg-gray-100'>
-        <Header title='Form Pendaftaran' />
+        <Header title={t('register:title')} />
         <View className='flex-1'>
           <ScrollView >
             <View className='p-4'>
-              <Text label={"Mohon untuk tegak dengan wajah saat menghadap kamera"} textClassName='mb-5' />
+              <Text
+                label={t('register:description')}
+                textClassName='mb-5'
+              />
               <InputCamera />
               <InputSelect
-                label='Tipe Pengunjung'
-                placeholder='Pilih Tipe Pengunjung'
+                label={t('register:label.visitorType')}
+                placeholder={t('register:placeholder.visitorType')}
                 value={formik.values.tipe_pengunjung as string}
                 onChange={(data) => formik.setFieldValue('tipe_pengunjung', data.value)}
                 data={TIPE_PENGUNJUNG}
@@ -96,8 +101,8 @@ export const Register = () => {
                 <View>
                   {formik.values.tipe_pengunjung === 'asn' && (
                     <InputText
-                      label='NRK'
-                      placeholder='Masukkan NRK'
+                      label={t('register:label.nrk')}
+                      placeholder={t('register:placeholder.nrk')}
                       value={formik.values.nrk as string}
                       onChangeText={formik.handleChange('nrk')}
                       error={formik.errors.nrk}
@@ -107,8 +112,8 @@ export const Register = () => {
                   )}
                   {formik.values.tipe_pengunjung === 'non-asn' && (
                     <InputText
-                      label='NIK'
-                      placeholder='Masukkan NIK'
+                      label={t('register:label.nik')}
+                      placeholder={t('register:placeholder.nik')}
                       value={formik.values.nik as string}
                       onChangeText={formik.handleChange('nik')}
                       error={formik.errors.nik}
@@ -117,16 +122,16 @@ export const Register = () => {
                     />
                   )}
                   <InputText
-                    label='Nama'
-                    placeholder='Masukkan nama'
+                    label={t('register:label.name')}
+                    placeholder={t('register:placeholder.name')}
                     value={formik.values.nama}
                     onChangeText={formik.handleChange('nama')}
                     error={formik.errors.nama}
                     containerClassName='mb-4'
                   />
                   <InputText
-                    label='No. HP'
-                    placeholder='Masukkan No. HP'
+                    label={t('register:label.phone')}
+                    placeholder={t('register:placeholder.phone')}
                     value={formik.values.no_hp}
                     onChangeText={formik.handleChange('no_hp')}
                     error={formik.errors.no_hp}
@@ -134,8 +139,8 @@ export const Register = () => {
                     keyboardType='numeric'
                   />
                   <InputText
-                    label='Email'
-                    placeholder='Masukkan Email'
+                    label={t('register:label.email')}
+                    placeholder={t('register:placeholder.email')}
                     value={formik.values.email}
                     onChangeText={formik.handleChange('email')}
                     error={formik.errors.email}
@@ -147,16 +152,16 @@ export const Register = () => {
         </View>
         <View>
           <ActionButton
-            primaryButtonLabel='Register'
-            secondaryButtonLabel='Kembali'
+            primaryButtonLabel={t('register:button.register')}
+            secondaryButtonLabel={t('register:button.back')}
             onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
                 return showModalConfirmation({
                   isVisible: true,
-                  title: "Batal Registrasi",
-                  message: "Apakah anda yakin ingin membatalkan registrasi?",
+                  title: t('register:modalConfirmation.title'),
+                  message: t('register:modalConfirmation.description'),
                   onConfirm: () => {
                     closeModalConfirmation()
                     navigation.goBack()

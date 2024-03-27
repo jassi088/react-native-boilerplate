@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { RootStackParamList } from './index.type';
-import { BuatJanji, Home, Kunjungan, Register, Setting } from '@/screens';
+import { BuatJanji, Home, Kunjungan, Register, Setting, Splash } from '@/screens';
 import { ModalAlert, ModalConfirmation } from '@/components/atoms';
 import { useModalAlert, useModalConfirmation } from '@/hooks';
 import Toast, { ToastConfig } from 'react-native-toast-message';
@@ -17,11 +17,12 @@ export const Routes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="Splash"
         screenOptions={{
           headerShown: false
         }}
       >
+        <Stack.Screen name="Splash" component={Splash} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Kunjungan" component={Kunjungan} />
