@@ -1,0 +1,28 @@
+{
+  "title": "Form Pendaftaran",
+  "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
+  "label": {
+    "visitorType": "Tipe Pengunjung",
+    "nik": "NIK",
+    "phone": "No. HP",
+    "email": "Email"
+  },
+  "placeholder": {
+    "visitortType": "Select Tipe Pengunjung",
+    "nik": "Masukkan NIK",
+    "phone": "Masukkan No. HP",
+    "email": "Masukkan Email"
+  },
+  "button": {
+    "register": "Register",
+    "back": "Kembali"
+  },
+  "modalConfirmation": {
+    "title": "Batal Registrasi",
+    "description": "Apakah anda yakin ingin registrasi?",
+    "button": {
+      "yes": "Yakin",
+      "no": "Batal"
+    }
+  }
+}

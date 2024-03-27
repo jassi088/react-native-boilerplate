@@ -1,0 +1,32 @@
+{
+  "title": "Appointment Form",
+  "description": "Please stand up straight and face the camera",
+  "label": {
+    "phone": "Your Phone",
+    "phoneDestination": "Phone Destination",
+    "needs": "Needs",
+    "other": "Other Needs",
+    "startHour": "Start Hour",
+    "endHour": "End Hour"
+  },
+  "placeholder": {
+    "phone": "Enter Your Phone Number",
+    "phoneDestination": "Enter Phone Destination",
+    "needs": "Choose Needs",
+    "other": "Enter Other Needs",
+    "startHour": "Choose Start Hour",
+    "endHour": "Choose End Hour"
+  },
+  "button": {
+    "appointment": "Appointment",
+    "back": "Back"
+  },
+  "modalConfirmation": {
+    "title": "Cancel Appointment",
+    "description": "Are you sure you want to cancel this appointment?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
+}

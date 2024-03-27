@@ -1,0 +1,8 @@
+{
+  "label": {
+    "chooseCamera": "Choose Camera",
+    "rotationCamera": "Rotation Camera",
+    "chooseQRCodeCamera": "Choose QR Code Camera",
+    "rotationQRCodeCamera": "Rotation QR Code Camera"
+  }
+}

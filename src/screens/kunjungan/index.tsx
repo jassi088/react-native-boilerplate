@@ -114,6 +114,7 @@ export const Kunjungan = () => {
                   value={formik.values.keperluan_lainnya as string}
                   onChangeText={formik.handleChange('keperluan_lainnya')}
                   error={formik.errors.keperluan_lainnya}
+                  containerClassName='mt-4'
                 />
               )}
             </View>

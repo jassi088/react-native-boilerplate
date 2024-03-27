@@ -1,0 +1,32 @@
+{
+  "title": "Form Buat Janji",
+  "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
+  "label": {
+    "phone": "No. HP Anda",
+    "phoneDestination": "No. HP Tujuan",
+    "needs": "Keperluan",
+    "other": "Keperluan (Lainnya)",
+    "startHour": "Jam Mulai",
+    "endHour": "Jam Selesai"
+  },
+  "placeholder": {
+    "phone": "Masukkan No. HP",
+    "phoneDestination": "Masukkan No. HP Tujuan",
+    "needs": "Pilih Keperluan",
+    "other": "Isi Keperluan (Lainnya)",
+    "startHour": "Pilih Jam Mulai",
+    "endHour": "Pilih Jam Selesai"
+  },
+  "button": {
+    "appointment": "Buat Janji",
+    "back": "Kembali"
+  },
+  "modalConfirmation": {
+    "title": "Batal Buat Janji",
+    "description": "Apakah anda yakin ingin buat janji?",
+    "button": {
+      "yes": "Yakin",
+      "no": "Batal"
+    }
+  }
+}

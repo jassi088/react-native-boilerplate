@@ -1,0 +1,26 @@
+{
+  "title": "Form Kunjungan",
+  "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
+  "label": {
+    "phone": "No. HP",
+    "needs": "Keperluan",
+    "other": "Keperluan (Lainnya)"
+  },
+  "placeholder": {
+    "phone": "Masukkan No. HP",
+    "needs": "Pilih Keperluan",
+    "other": "Isi Keperluan (Lainnya)"
+  },
+  "button": {
+    "visit": "Kunjungan",
+    "back": "Kembali"
+  },
+  "modalConfirmation": {
+    "title": "Batal Kunjungan",
+    "description": "Apakah anda yakin ingin kunjungan?",
+    "button": {
+      "yes": "Yakin",
+      "no": "Batal"
+    }
+  }
+}

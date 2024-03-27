@@ -1,0 +1,8 @@
+{
+  "label": {
+    "chooseCamera": "Pilih Kamera",
+    "rotationCamera": "Rotasi Kamera",
+    "chooseQRCodeCamera": "Pilih Kamera QR Code",
+    "rotationQRCodeCamera": "Rotasi Kamera QR Code"
+  }
+}

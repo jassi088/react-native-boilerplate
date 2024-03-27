@@ -1,0 +1,26 @@
+{
+  "title": "Visit Form",
+  "description": "Please stand up straight and face the camera",
+  "label": {
+    "phone": "Phone",
+    "needs": "Needs",
+    "other": "Needs (Other)"
+  },
+  "placeholder": {
+    "phone": "Enter Phone",
+    "needs": "Choose Needs",
+    "other": "Enter Needs (Other)"
+  },
+  "button": {
+    "visit": "Visit",
+    "back": "Back"
+  },
+  "modalConfirmation": {
+    "title": "Cancel Visit",
+    "description": "Are you sure you want to cancel this visit?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
+}

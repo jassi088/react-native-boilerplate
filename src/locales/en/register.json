@@ -1,0 +1,28 @@
+{
+  "title": "Registration Form",
+  "description": "Please stand up straight and face the camera",
+  "label": {
+    "visitorType": "Visitor Type",
+    "nik": "NIK",
+    "phone": "Phone",
+    "email": "Email"
+  },
+  "placeholder": {
+    "visitortType": "Select Visitor Type",
+    "nik": "Enter NIK",
+    "phone": "Enter Phone",
+    "email": "Enter Email"
+  },
+  "button": {
+    "register": "Register",
+    "back": "Back"
+  },
+  "modalConfirmation": {
+    "title": "Cancel Registration",
+    "description": "Are you sure you want to cancel the registration?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
+}
