@@ -3,13 +3,14 @@ import API from '@/services/API';
 import dayjs from 'dayjs';
 
 export interface AppointmentInterface {
-  id: string;
+  phone: string;
+  photo: string;
   name: string;
   visitorId: string;
   employee_phone: string;
   start_on: Date;
   end_on: Date;
-  keperluan: number;
+  keperluan: string;
   id_keperluan: number;
   catatan: string;
 }

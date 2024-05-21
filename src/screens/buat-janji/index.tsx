@@ -1,30 +1,122 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputCamera, InputSelect, InputText, InputTime } from '@/components/atoms'
+import { InputCamera, InputCameraHandle, InputSelect, InputText, InputTime } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFormik } from 'formik'
 import { buatJanjiSchema } from '@/yupSchemas'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation } from '@/hooks'
+import { useModalAlert, useModalConfirmation, useRegister, useVisitorCheck } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
-import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
 import dayjs from 'dayjs'
 import { useBackHandler } from '@react-native-community/hooks'
 import { useTranslation } from 'react-i18next'
+import { useMutation, useQuery } from 'react-query'
+import { AppointmentInterface, postAppointment } from '@/endpoints/POST_Appointment'
+import { getPurpose } from '@/endpoints/GET_Purpose'
+import { cn } from '@/utils'
+import { BaseResponse } from '@/interfaces/BaseResponse'
 
 type BuatJanjiPayload = yup.InferType<typeof buatJanjiSchema>
 
 export const BuatJanji = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(['visit', 'common'])
+  const { setNavigateAfterRegister } = useRegister()
+  const inputCamera = useRef<InputCameraHandle>(null)
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
+
+  const { mutateAsync: mutateAsyncVisitorCheck, isLoading: isLoadingVisitorCheck } = useVisitorCheck({
+    onSuccess: (response) => {
+      if (!response.status) {
+        return showModalAlert({
+          isVisible: true,
+          message: response.message,
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => {
+            closeModalAlert();
+            setNavigateAfterRegister('Kunjungan')
+            navigation.navigate('Register')
+          }
+        })
+      }
+
+      const { data } = response
+      mutateAsyncAppointment({
+        phone: data!.phone,
+        photo: formik.values.photo,
+        name: data!.name,
+        visitorId: data!.visitorId,
+        employee_phone: formik.values.no_hp_tujuan,
+        start_on: dayjs(formik.values.jam_mulai).toDate(),
+        end_on: dayjs(formik.values.jam_selesai).toDate(),
+        id_keperluan: Number(formik.values.id_keperluan),
+        keperluan: formik.values.keperluan as string,
+        catatan: 'DUMMY'
+      })
+    },
+    onError: (error) => {
+      return showModalAlert({
+        isVisible: true,
+        title: 'Gagal Memproses Data',
+        message: error.message,
+        variant: 'error',
+        buttonText: t('common:button.back'),
+        onPress: () => closeModalAlert()
+      })
+    }
+  })
+
+  const { data: dataPurpose } = useQuery({
+    queryKey: ['purpose'],
+    queryFn: () => getPurpose(),
+  })
+
+  const { mutateAsync: mutateAsyncAppointment, isLoading: isLoadingAppointment } = useMutation({
+    mutationKey: ['appointment'],
+    mutationFn: (body: AppointmentInterface) => postAppointment(body),
+    onSuccess: (response) => {
+      console.log('respsonse', response);
+
+      if (response.status === false) {
+        return showModalAlert({
+          isVisible: true,
+          message: response.message,
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => closeModalAlert()
+        })
+      }
+
+      showModalAlert({
+        isVisible: true,
+        message: 'Berhasil Registrasi Kunjungan',
+        variant: 'success',
+        buttonText: t('common:button.back'),
+        onPress: () => {
+          closeModalAlert()
+          navigation.goBack()
+        }
+      })
+    },
+    onError: (error: BaseResponse) => {
+      return showModalAlert({
+        isVisible: true,
+        title: 'Gagal Register',
+        message: error.message,
+        variant: 'error',
+        buttonText: t('common:button.back'),
+        onPress: () => closeModalAlert()
+      })
+    }
+  })
 
   useBackHandler(() => {
     const isDirty = formik.dirty
@@ -50,42 +142,53 @@ export const BuatJanji = () => {
     initialValues: {
       no_hp: '',
       no_hp_tujuan: '',
+      id_keperluan: '',
       keperluan: '',
-      keperluan_lainnya: '',
       jam_mulai: '',
-      jam_selesai: ''
+      jam_selesai: '',
+      photo: '',
     },
     validationSchema: buatJanjiSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (values.no_hp === '081226696696') {
-            Toast.show({
-              type: 'error',
-              text1: t('appointment:alert.notRegistered.title'),
-              text2: t('appointment:alert.notRegistered.message')
-            })
-          } else {
-            showModalAlert({
-              isVisible: true,
-              title: t('appointment:alert.success.title'),
-              message: t('appointment:alert.success.message'),
-              variant: 'success',
-              buttonText: t('common:button.back'),
-              onPress: () => {
-                closeModalAlert()
-                navigation.goBack()
-              }
-            })
-          }
-
-          resolve(true)
-        }, 2000)
+      mutateAsyncVisitorCheck({
+        phone: values.no_hp,
+        photo: values.photo
       })
     }
   })
+
+  const onSubmit = async () => {
+    try {
+      const photo = await inputCamera.current?.takePhoto()
+
+      if (!photo?.faceDetection.isFaceDetected) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah tidak terdeteksi',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      if (photo.faceDetection.totalFaceDetected > 1) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah terdeteksi lebih dari satu',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      formik.setFieldValue('photo', photo.photo.path)
+      formik.handleSubmit()
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Gagal untuk registrasi',
+        text2: (error as Error).message || 'Terjadi kesaalahan'
+      })
+    }
+  }
 
   return (
     <>
@@ -98,7 +201,9 @@ export const BuatJanji = () => {
                 label={t('appointment:description')}
                 textClassName='mb-5'
               />
-              <InputCamera />
+              <View className="w-full h-72 mb-12">
+                <InputCamera ref={inputCamera} />
+              </View>
               <InputText
                 label={t('appointment:label.phone')}
                 placeholder={t('appointment:placeholder.phone')}
@@ -118,25 +223,32 @@ export const BuatJanji = () => {
                 keyboardType='numeric'
               />
               <InputSelect
-                label={t('appointment:label.needs')}
-                placeholder={t('appointment:placeholder.needs')}
-                value={formik.values.keperluan}
-                onChange={data => formik.setFieldValue('keperluan', data.value)}
-                error={formik.errors.keperluan}
-                data={KEPERLUAN}
-                containerClassName='mb-4'
+                label={t('visit:label.needs')}
+                placeholder={t('visit:placeholder.needs')}
+                value={formik.values.id_keperluan}
+                onChange={data => {
+                  formik.setFieldValue('id_keperluan', String(data.value))
+                  if (data.value !== 5) {
+                    formik.setFieldValue('keperluan', String(data.label))
+                  }
+                }}
+                error={formik.errors.id_keperluan}
+                data={dataPurpose?.data ? dataPurpose?.data.map(item => ({
+                  label: item.name,
+                  value: String(item.id)
+                })) : []}
               />
-              {formik.values.keperluan === 'lainnya' && (
+              {formik.values.id_keperluan === '5' && (
                 <InputText
                   label={t('appointment:label.other')}
                   placeholder={t('appointment:placeholder.other')}
-                  value={formik.values.keperluan_lainnya as string}
-                  onChangeText={formik.handleChange('keperluan_lainnya')}
-                  error={formik.errors.keperluan_lainnya}
+                  value={formik.values.keperluan as string}
+                  onChangeText={formik.handleChange('keperluan')}
+                  error={formik.errors.keperluan}
                   containerClassName='mb-4'
                 />
               )}
-              <View className='flex flex-row items-center'>
+              <View className={cn('flex flex-row items-center', 'mt-5')}>
                 <InputTime
                   label={t('appointment:label.startHour')}
                   placeholder={t('appointment:placeholder.startHour')}
@@ -164,7 +276,7 @@ export const BuatJanji = () => {
           <ActionButton
             primaryButtonLabel={t('appointment:button.appointment')}
             secondaryButtonLabel={t('appointment:button.back')}
-            onPrimaryButtonPress={() => formik.handleSubmit()}
+            onPrimaryButtonPress={onSubmit}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
@@ -185,7 +297,7 @@ export const BuatJanji = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={formik.isSubmitting} />
+      <Loader isVisible={isLoadingAppointment || isLoadingVisitorCheck} />
     </>
   )
 }

@@ -73,7 +73,7 @@ export const Kunjungan = () => {
   })
 
   const { mutateAsync: mutateAsyncKunjungan, isLoading: isLoadingKunjungan } = useMutation({
-    mutationKey: ['register'],
+    mutationKey: ['kunjungan'],
     mutationFn: (body: PostKunjunganInterface) => postKunjungan(body),
     onSuccess: (response) => {
       console.log('respsonse', response);
@@ -209,7 +209,9 @@ export const Kunjungan = () => {
                 value={formik.values.id_keperluan}
                 onChange={data => {
                   formik.setFieldValue('id_keperluan', String(data.value))
-                  formik.setFieldValue('keperluan', String(data.label))
+                  if (data.value !== 5) {
+                    formik.setFieldValue('keperluan', String(data.label))
+                  }
                 }}
                 error={formik.errors.id_keperluan}
                 data={dataPurpose?.data ? dataPurpose?.data.map(item => ({

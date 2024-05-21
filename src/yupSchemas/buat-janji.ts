@@ -6,16 +6,11 @@ export const buatJanjiSchema = yup.object().shape({
   no_hp_tujuan: yup.string().required('Nomor Handphone tujuan harus diisi'),
   jam_mulai: yup.string().required('Jam mulai harus diisi'),
   jam_selesai: yup.string().required('Jam selesai harus diisi'),
-  keperluan: yup
-    .string()
-    .required('Keperluan harus diisi')
-    .oneOf(
-      KEPERLUAN.map((item) => item.value),
-      'Keperluan tidak valid'
-    ),
-  keperluan_lainnya: yup.string().when('keperluan', {
-    is: 'lainnya',
+  id_keperluan: yup.string().required('Keperluan harus diisi'),
+  keperluan: yup.string().when('id_keperluan', {
+    is: '5',
     then: (schema) => schema.required('Keperluan lainnya harus diisi'),
     otherwise: (schema) => schema.optional()
-  })
+  }),
+  photo: yup.string().required('Foto harus diisi')
 });
