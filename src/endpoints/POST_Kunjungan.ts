@@ -6,6 +6,13 @@ export interface KunjunganInterface {
   name: string;
 }
 
-export const postKunjungan = async (): Promise<BaseResponse<KunjunganInterface[]>> => {
-  return API.get<BaseResponse<KunjunganInterface[]>>('/v2/visitor/check');
+export interface PostKunjunganInterface {
+  visitor_id: string;
+  id_keperluan: number;
+  keperluan?: string;
+  photo: string;
+}
+
+export const postKunjungan = async (body: PostKunjunganInterface): Promise<BaseResponse<KunjunganInterface[]>> => {
+  return API.post<BaseResponse<KunjunganInterface[]>, PostKunjunganInterface>('/v2/visitor/check', body);
 };

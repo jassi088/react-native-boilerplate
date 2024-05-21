@@ -1,13 +1,28 @@
 import { Button } from "@/components/atoms/button"
 import { Text } from "@/components/atoms/text"
 import { useCameraSetting, useModalAlert } from "@/hooks"
-import { useEffect, useRef } from "react"
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Linking, View } from "react-native"
 import Toast from "react-native-toast-message"
-import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult } from "react-native-vision-camera"
+import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult, Frame, PhotoFile, useFrameProcessor } from "react-native-vision-camera"
 
-export const InputCamera = () => {
+export type InputCameraHandle = {
+  takePhoto: () => Promise<{
+    photo: PhotoFile
+    faceDetection: {
+      message: string | undefined,
+      isFaceDetected: boolean
+      totalFaceDetected: number
+    }
+  }>
+}
+export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
+  const [message, setMessage] = useState<undefined | {
+    color: string
+    message: string
+  }>(undefined)
+
   const { t } = useTranslation(['input'])
   const cameraRef = useRef<Camera>(null)
 
@@ -39,12 +54,40 @@ export const InputCamera = () => {
         onPress: () => closeModalAlert()
       })
     }
+  }
 
+  const takePhoto = async (): Promise<{
+    photo: PhotoFile
+    faceDetection: {
+      message: string | undefined,
+      isFaceDetected: boolean
+      totalFaceDetected: number
+    }
+  }> => {
+    const photo = await cameraRef.current?.takePhoto()
+
+    return {
+      photo: photo as PhotoFile,
+      faceDetection: {
+        // message: message?.message || undefined,
+        // isFaceDetected: message?.color === colors.green[500],
+        // totalFaceDetected: message?.color === colors.green[500] ? 1 : 0,
+        // TODO: FIX THIS WITH FACE DETECTION
+        message: undefined,
+        isFaceDetected: true,
+        totalFaceDetected: 1
+      }
+    }
   }
 
   useEffect(() => {
     if (!hasPermission) getPermission()
   }, [hasPermission])
+
+  useImperativeHandle(ref, () => ({
+    takePhoto
+  }), [takePhoto])
+
 
   if (!device || !hasPermission) {
     return (
@@ -71,11 +114,13 @@ export const InputCamera = () => {
 
   return (
     <View className="flex items-center justify-center flex-1 h-full">
-      <View className="rounded mb-12">
+      <View className="rounded">
         <Camera
+          // @ts-ignore
           ref={cameraRef}
           device={device}
           isActive={true}
+          photo={true}
           className="w-64 h-64 rounded-md"
           orientation={cameraOrientation}
           onError={(error) => Toast.show({
@@ -85,6 +130,15 @@ export const InputCamera = () => {
           })}
         />
       </View>
+      {message && (
+        <Text
+          label={message.message}
+          color={message.color}
+          textAlign="center"
+          className="mt-3"
+          variant="large"
+        />
+      )}
     </View>
   )
-}
+})

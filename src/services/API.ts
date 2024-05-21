@@ -9,6 +9,7 @@ class Api {
     // Must be inside request function, coz in case token is new
     const headers = new Headers();
     headers.append('Accept', 'application/json');
+    headers.append('Authorization', '!@#$%^&*()_+');
 
     if (options.body instanceof FormData === false) {
       headers.append('Content-Type', 'application/json');

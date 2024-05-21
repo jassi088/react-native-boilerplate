@@ -1,66 +1,169 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputCamera, InputSelect, InputText } from '@/components/atoms'
+import { InputCamera, InputCameraHandle, InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFormik } from 'formik'
 import { kunjunganSchema } from '@/yupSchemas'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation } from '@/hooks'
+import { useModalAlert, useModalConfirmation, useRegister, useVisitorCheck } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
-import { KEPERLUAN } from '@/constants/keperluan'
 import Toast from 'react-native-toast-message'
 import { useBackHandler } from '@react-native-community/hooks'
 import { useTranslation } from 'react-i18next'
+import { useMutation, useQuery } from 'react-query'
+import { postKunjungan, PostKunjunganInterface } from '@/endpoints/POST_Kunjungan'
+import { BaseResponse } from '@/interfaces/BaseResponse'
+import { getPurpose } from '@/endpoints/GET_Purpose'
 
 type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
 export const Kunjungan = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(['visit', 'common'])
+  const { setNavigateAfterRegister } = useRegister()
+  const inputCamera = useRef<InputCameraHandle>(null)
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
+  const { mutateAsync: mutateAsyncVisitorCheck, isLoading: isLoadingVisitorCheck } = useVisitorCheck({
+    onSuccess: (response) => {
+      if (!response.status) {
+        return showModalAlert({
+          isVisible: true,
+          message: response.message,
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => {
+            closeModalAlert();
+            setNavigateAfterRegister('Kunjungan')
+            navigation.navigate('Register')
+          }
+        })
+      }
+
+      showModalAlert({
+        isVisible: true,
+        title: t('register:alert.success.title'),
+        message: t('register:alert.success.message'),
+        variant: 'success',
+        buttonText: t('common:button.back'),
+        onPress: () => {
+          closeModalAlert()
+          navigation.goBack()
+        }
+      })
+    },
+    onError: (error) => {
+      return showModalAlert({
+        isVisible: true,
+        title: 'Gagal Memproses Data',
+        message: error.message,
+        variant: 'error',
+        buttonText: t('common:button.back'),
+        onPress: () => closeModalAlert()
+      })
+    }
+  })
+
+  const { data: dataPurpose, isLoading: isLoadingPurpose } = useQuery({
+    queryKey: ['purpose'],
+    queryFn: () => getPurpose(),
+  })
+
+  const { mutateAsync: mutateAsyncKunjungan, isLoading: isLoadingKunjungan } = useMutation({
+    mutationKey: ['register'],
+    mutationFn: (body: PostKunjunganInterface) => postKunjungan(body),
+    onSuccess: (response) => {
+      console.log('respsonse', response);
+
+      if (response.status === false) {
+        return showModalAlert({
+          isVisible: true,
+          title: 'Gagal Register',
+          message: response.message,
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => closeModalAlert()
+        })
+      }
+
+      showModalAlert({
+        isVisible: true,
+        title: t('register:alert.success.title'),
+        message: t('register:alert.success.message'),
+        variant: 'success',
+        buttonText: t('common:button.back'),
+        onPress: () => {
+          closeModalAlert()
+          navigation.goBack()
+        }
+      })
+    },
+    onError: (error: BaseResponse) => {
+      return showModalAlert({
+        isVisible: true,
+        title: 'Gagal Register',
+        message: error.message,
+        variant: 'error',
+        buttonText: t('common:button.back'),
+        onPress: () => closeModalAlert()
+      })
+    }
+  })
+
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
       no_hp: '',
-      keperluan: ''
+      keperluan: '',
+      id_keperluan: '',
+      photo: ''
     },
     validationSchema: kunjunganSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (values.no_hp === '081226696696') {
-            Toast.show({
-              type: 'error',
-              text1: t('visit:alert.notRegistered.title'),
-              text2: t('visit:alert.notRegistered.message')
-            })
-          } else {
-            showModalAlert({
-              isVisible: true,
-              title: t('visit:alert.success.title'),
-              message: t('visit:alert.success.message'),
-              variant: 'success',
-              buttonText: t('common:button.back'),
-              onPress: () => {
-                closeModalAlert()
-                navigation.goBack()
-              }
-            })
-          }
-
-          resolve(true)
-        }, 2000)
+      mutateAsyncVisitorCheck({
+        phone: values.no_hp,
+        photo: values.photo
       })
     }
   })
+
+  const onSubmit = async () => {
+    try {
+      const photo = await inputCamera.current?.takePhoto()
+
+      if (!photo?.faceDetection.isFaceDetected) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah tidak terdeteksi',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      if (photo.faceDetection.totalFaceDetected > 1) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah terdeteksi lebih dari satu',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      formik.setFieldValue('photo', photo.photo.path)
+      formik.handleSubmit()
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Gagal untuk registrasi',
+        text2: (error as Error).message || 'Terjadi kesaalahan'
+      })
+    }
+  }
 
   useBackHandler(() => {
     const isDirty = formik.dirty
@@ -93,7 +196,9 @@ export const Kunjungan = () => {
                 label={t('visit:description')}
                 textClassName='mb-5'
               />
-              <InputCamera />
+              <View className="w-full h-72 mb-12">
+                <InputCamera ref={inputCamera} />
+              </View>
               <InputText
                 label={t('visit:label.phone')}
                 placeholder={t('visit:placeholder.phone')}
@@ -106,18 +211,21 @@ export const Kunjungan = () => {
               <InputSelect
                 label={t('visit:label.needs')}
                 placeholder={t('visit:placeholder.needs')}
-                value={formik.values.keperluan}
-                onChange={data => formik.setFieldValue('keperluan', data.value)}
-                error={formik.errors.keperluan}
-                data={KEPERLUAN}
+                value={formik.values.id_keperluan}
+                onChange={data => formik.setFieldValue('id_keperluan', String(data.value))}
+                error={formik.errors.id_keperluan}
+                data={dataPurpose?.data ? dataPurpose?.data.map(item => ({
+                  label: item.name,
+                  value: String(item.id)
+                })) : []}
               />
-              {formik.values.keperluan === 'lainnya' && (
+              {formik.values.id_keperluan === '5' && (
                 <InputText
                   label={t('visit:label.other')}
                   placeholder={t('visit:placeholder.other')}
-                  value={formik.values.keperluan_lainnya as string}
-                  onChangeText={formik.handleChange('keperluan_lainnya')}
-                  error={formik.errors.keperluan_lainnya}
+                  value={formik.values.keperluan as string}
+                  onChangeText={formik.handleChange('keperluan')}
+                  error={formik.errors.keperluan}
                   containerClassName='mt-4'
                 />
               )}
@@ -128,7 +236,7 @@ export const Kunjungan = () => {
           <ActionButton
             primaryButtonLabel={t('visit:button.visit')}
             secondaryButtonLabel={t('visit:button.back')}
-            onPrimaryButtonPress={() => formik.handleSubmit()}
+            onPrimaryButtonPress={onSubmit}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
@@ -149,7 +257,7 @@ export const Kunjungan = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={formik.isSubmitting} />
+      <Loader isVisible={isLoadingVisitorCheck || isLoadingKunjungan} />
     </>
   )
 }

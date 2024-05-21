@@ -9,7 +9,7 @@ import { TIPE_PENGUNJUNG } from '@/constants/tipe-pengunjung'
 import { useFormik } from 'formik'
 import { registerSchema } from '@/yupSchemas'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation } from '@/hooks'
+import { useModalAlert, useModalConfirmation, useRegister } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import { useBackHandler } from '@react-native-community/hooks'
@@ -17,12 +17,14 @@ import { useTranslation } from 'react-i18next'
 import Toast from 'react-native-toast-message'
 import { useMutation } from 'react-query'
 import { postRegister, PostRegisterInterface } from '@/endpoints/POST_Register'
+import { BaseResponse } from '@/interfaces/BaseResponse'
 
 type RegisterPayload = yup.InferType<typeof registerSchema>
 
 export const Register = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(['register', 'common'])
+  const { navigateAfterRegister } = useRegister()
 
   const inputCamera = useRef<InputCameraHandle>(null)
 
@@ -49,10 +51,23 @@ export const Register = () => {
     return false
   })
 
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync: mutateAsyncRegister, isLoading: isLoadingRegister } = useMutation({
     mutationKey: ['register'],
     mutationFn: (body: PostRegisterInterface) => postRegister(body),
-    onSuccess: () => {
+    onSuccess: (response) => {
+      console.log('respsonse', response);
+
+      if (response.status === false) {
+        return showModalAlert({
+          isVisible: true,
+          title: 'Gagal Register',
+          message: response.message,
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => closeModalAlert()
+        })
+      }
+
       showModalAlert({
         isVisible: true,
         title: t('register:alert.success.title'),
@@ -61,12 +76,24 @@ export const Register = () => {
         buttonText: t('common:button.back'),
         onPress: () => {
           closeModalAlert()
-          navigation.goBack()
+          if (navigateAfterRegister) {
+            // @ts-ignore
+            navigation.replace(navigateAfterRegister)
+          } else {
+            navigation.goBack()
+          }
         }
       })
     },
-    onError: () => {
-
+    onError: (error: BaseResponse) => {
+      return showModalAlert({
+        isVisible: true,
+        title: 'Gagal Register',
+        message: error.message,
+        variant: 'error',
+        buttonText: t('common:button.back'),
+        onPress: () => closeModalAlert()
+      })
     }
   })
 
@@ -84,8 +111,10 @@ export const Register = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      mutateAsync({
+      mutateAsyncRegister({
         ...formik.values,
+        phone: formik.values.no_hp,
+        name: formik.values.nama,
         is_asn: formik.values.tipe_pengunjung === 'asn',
       } as unknown as PostRegisterInterface)
     }
@@ -94,7 +123,7 @@ export const Register = () => {
   const onSubmit = async () => {
     try {
       const photo = await inputCamera.current?.takePhoto()
-      console.log('photo', photo);
+
       if (!photo?.faceDetection.isFaceDetected) {
         return Toast.show({
           type: 'error',
@@ -133,7 +162,7 @@ export const Register = () => {
                 label={t('register:description')}
                 textClassName='mb-5'
               />
-              <View className="w-full h-72 mb-12 bg-red-50">
+              <View className="w-full h-72 mb-12">
                 <InputCamera ref={inputCamera} />
               </View>
               <InputSelect
@@ -223,7 +252,7 @@ export const Register = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={formik.isSubmitting} />
+      <Loader isVisible={isLoadingRegister} />
     </>
   )
 }
