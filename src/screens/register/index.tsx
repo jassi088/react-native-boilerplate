@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputCamera, InputSelect, InputText } from '@/components/atoms'
+import { InputCamera, InputCameraHandle, InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { useNavigation } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -14,12 +14,17 @@ import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import { useBackHandler } from '@react-native-community/hooks'
 import { useTranslation } from 'react-i18next'
+import Toast from 'react-native-toast-message'
+import { useMutation } from 'react-query'
+import { postRegister, PostRegisterInterface } from '@/endpoints/POST_Register'
 
 type RegisterPayload = yup.InferType<typeof registerSchema>
 
 export const Register = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(['register', 'common'])
+
+  const inputCamera = useRef<InputCameraHandle>(null)
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
@@ -44,6 +49,27 @@ export const Register = () => {
     return false
   })
 
+  const { mutateAsync, isLoading } = useMutation({
+    mutationKey: ['register'],
+    mutationFn: (body: PostRegisterInterface) => postRegister(body),
+    onSuccess: () => {
+      showModalAlert({
+        isVisible: true,
+        title: t('register:alert.success.title'),
+        message: t('register:alert.success.message'),
+        variant: 'success',
+        buttonText: t('common:button.back'),
+        onPress: () => {
+          closeModalAlert()
+          navigation.goBack()
+        }
+      })
+    },
+    onError: () => {
+
+    }
+  })
+
   const formik = useFormik<RegisterPayload>({
     initialValues: {
       tipe_pengunjung: '',
@@ -51,30 +77,50 @@ export const Register = () => {
       email: '',
       nama: '',
       nik: '',
-      nrk: ''
+      nrk: '',
+      photo: ''
     },
     validationSchema: registerSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          showModalAlert({
-            isVisible: true,
-            title: t('register:alert.title'),
-            message: t('register:alert.message'),
-            variant: 'success',
-            buttonText: t('common:button.back'),
-            onPress: () => {
-              closeModalAlert()
-              navigation.goBack()
-            }
-          })
-          resolve(true)
-        }, 2000)
-      })
+      mutateAsync({
+        ...formik.values,
+        is_asn: formik.values.tipe_pengunjung === 'asn',
+      } as unknown as PostRegisterInterface)
     }
   })
+
+  const onSubmit = async () => {
+    try {
+      const photo = await inputCamera.current?.takePhoto()
+      console.log('photo', photo);
+      if (!photo?.faceDetection.isFaceDetected) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah tidak terdeteksi',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      if (photo.faceDetection.totalFaceDetected > 1) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Wajah terdeteksi lebih dari satu',
+          text2: 'Silahkan coba lagi'
+        })
+      }
+
+      formik.setFieldValue('photo', photo.photo.path)
+      formik.handleSubmit()
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Gagal untuk registrasi',
+        text2: (error as Error).message || 'Terjadi kesaalahan'
+      })
+    }
+  }
 
   return (
     <>
@@ -87,7 +133,9 @@ export const Register = () => {
                 label={t('register:description')}
                 textClassName='mb-5'
               />
-              <InputCamera />
+              <View className="w-full h-72 mb-12 bg-red-50">
+                <InputCamera ref={inputCamera} />
+              </View>
               <InputSelect
                 label={t('register:label.visitorType')}
                 placeholder={t('register:placeholder.visitorType')}
@@ -154,7 +202,7 @@ export const Register = () => {
           <ActionButton
             primaryButtonLabel={t('register:button.register')}
             secondaryButtonLabel={t('register:button.back')}
-            onPrimaryButtonPress={() => formik.handleSubmit()}
+            onPrimaryButtonPress={onSubmit}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {

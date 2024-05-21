@@ -19,5 +19,5 @@ export interface InputSelectInterface {
 
 export interface InputSelectData {
   label: string | number;
-  value: string | number;
+  value: string | number | boolean;
 }

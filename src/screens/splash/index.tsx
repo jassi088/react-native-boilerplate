@@ -13,7 +13,8 @@ export const Splash = () => {
     const process = async () => {
       await init()
       setTimeout(() => {
-        navigation.navigate('Home')
+        // @ts-ignore
+        navigation.replace('Home')
       }, 1500)
     }
 
