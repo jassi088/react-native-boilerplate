@@ -46,16 +46,13 @@ export const Kunjungan = () => {
         })
       }
 
-      showModalAlert({
-        isVisible: true,
-        title: t('register:alert.success.title'),
-        message: t('register:alert.success.message'),
-        variant: 'success',
-        buttonText: t('common:button.back'),
-        onPress: () => {
-          closeModalAlert()
-          navigation.goBack()
-        }
+      const { data } = response
+      mutateAsyncKunjungan({
+        phone: data!.phone,
+        visitor_id: data!.visitorId,
+        id_keperluan: Number(formik.values.id_keperluan),
+        keperluan: formik.values.keperluan,
+        photo: formik.values.photo
       })
     },
     onError: (error) => {
@@ -70,7 +67,7 @@ export const Kunjungan = () => {
     }
   })
 
-  const { data: dataPurpose, isLoading: isLoadingPurpose } = useQuery({
+  const { data: dataPurpose } = useQuery({
     queryKey: ['purpose'],
     queryFn: () => getPurpose(),
   })
@@ -84,7 +81,6 @@ export const Kunjungan = () => {
       if (response.status === false) {
         return showModalAlert({
           isVisible: true,
-          title: 'Gagal Register',
           message: response.message,
           variant: 'error',
           buttonText: t('common:button.back'),
@@ -94,8 +90,7 @@ export const Kunjungan = () => {
 
       showModalAlert({
         isVisible: true,
-        title: t('register:alert.success.title'),
-        message: t('register:alert.success.message'),
+        message: 'Berhasil Registrasi Kunjungan',
         variant: 'success',
         buttonText: t('common:button.back'),
         onPress: () => {
@@ -212,7 +207,10 @@ export const Kunjungan = () => {
                 label={t('visit:label.needs')}
                 placeholder={t('visit:placeholder.needs')}
                 value={formik.values.id_keperluan}
-                onChange={data => formik.setFieldValue('id_keperluan', String(data.value))}
+                onChange={data => {
+                  formik.setFieldValue('id_keperluan', String(data.value))
+                  formik.setFieldValue('keperluan', String(data.label))
+                }}
                 error={formik.errors.id_keperluan}
                 data={dataPurpose?.data ? dataPurpose?.data.map(item => ({
                   label: item.name,
