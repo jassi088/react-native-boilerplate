@@ -22,7 +22,7 @@ interface BaseAppointmentInterface extends AppointmentInterface {
 }
 
 export const postAppointment = async (body: AppointmentInterface): Promise<BaseResponse<AppointmentInterface[]>> => {
-  return API.post<BaseResponse<AppointmentInterface[]>, BaseAppointmentInterface>('/v2/visitor/check', {
+  return API.post<BaseResponse<AppointmentInterface[]>, BaseAppointmentInterface>('/v2/appoinment', {
     ...body,
     branch_id: 'T-001',
     visitor_type: 'guest',

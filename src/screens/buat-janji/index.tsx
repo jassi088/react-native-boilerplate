@@ -97,7 +97,7 @@ export const BuatJanji = () => {
 
       showModalAlert({
         isVisible: true,
-        message: 'Berhasil Registrasi Kunjungan',
+        message: 'Appointment Berhasil Dibuat',
         variant: 'success',
         buttonText: t('common:button.back'),
         onPress: () => {

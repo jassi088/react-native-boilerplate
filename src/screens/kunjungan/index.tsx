@@ -90,7 +90,7 @@ export const Kunjungan = () => {
 
       showModalAlert({
         isVisible: true,
-        message: 'Berhasil Registrasi Kunjungan',
+        message: 'Kunjungan Berhasil Dibuat',
         variant: 'success',
         buttonText: t('common:button.back'),
         onPress: () => {
@@ -102,7 +102,7 @@ export const Kunjungan = () => {
     onError: (error: BaseResponse) => {
       return showModalAlert({
         isVisible: true,
-        title: 'Gagal Register',
+        title: 'Gagal Memproses Data',
         message: error.message,
         variant: 'error',
         buttonText: t('common:button.back'),
