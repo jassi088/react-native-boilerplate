@@ -55,8 +55,6 @@ export const Register = () => {
     mutationKey: ['register'],
     mutationFn: (body: PostRegisterInterface) => postRegister(body),
     onSuccess: (response) => {
-      console.log('respsonse', response);
-
       if (response.status === false) {
         return showModalAlert({
           isVisible: true,
@@ -105,7 +103,6 @@ export const Register = () => {
       nama: '',
       nik: '',
       nrk: '',
-      photo: ''
     },
     validationSchema: registerSchema,
     validateOnChange: false,
@@ -139,7 +136,8 @@ export const Register = () => {
             photo: photo.photo.path,
           } as unknown as PostRegisterInterface)
         } catch (error) {
-          console.log('error', error);
+          console.log('[Register] error', error);
+
           Toast.show({
             type: 'error',
             text1: 'Gagal memproses data',

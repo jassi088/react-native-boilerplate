@@ -19,8 +19,6 @@ export interface BasePostKunjunganInterface {
 }
 
 export const postKunjungan = async (body: PostKunjunganInterface): Promise<BaseResponse<KunjunganInterface[]>> => {
-  console.log('body', body);
-
   return API.post<BaseResponse<KunjunganInterface[]>, BasePostKunjunganInterface>('/v2/visitor/check', {
     ...body,
     branch_id: 'T-001'

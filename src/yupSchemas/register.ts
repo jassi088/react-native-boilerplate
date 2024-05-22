@@ -21,6 +21,5 @@ export const registerSchema = yup.object().shape({
     is: 'asn',
     then: (schema) => schema.required('NRK harus diisi'),
     otherwise: (schema) => schema.optional()
-  }),
-  photo: yup.string()
+  })
 });

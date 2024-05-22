@@ -30,7 +30,7 @@ export const Kunjungan = () => {
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
-  const { mutateAsync: mutateAsyncVisitorCheck, isLoading: isLoadingVisitorCheck } = useVisitorCheck({
+  const { mutateAsync: mutateAsyncVisitorCheck } = useVisitorCheck({
     onSuccess: (response) => {
       if (!response.status) {
         return showModalAlert({
@@ -52,10 +52,12 @@ export const Kunjungan = () => {
         visitor_id: data!.visitorId,
         id_keperluan: Number(formik.values.id_keperluan),
         keperluan: formik.values.keperluan,
-        photo: formik.values.photo
+        photo: formik.values.photo as string
       })
     },
     onError: (error) => {
+      console.log('[Kunjungan][Visitor Check] error', error);
+
       return showModalAlert({
         isVisible: true,
         title: 'Gagal Memproses Data',
@@ -76,8 +78,6 @@ export const Kunjungan = () => {
     mutationKey: ['kunjungan'],
     mutationFn: (body: PostKunjunganInterface) => postKunjungan(body),
     onSuccess: (response) => {
-      console.log('respsonse', response);
-
       if (response.status === false) {
         return showModalAlert({
           isVisible: true,
@@ -100,6 +100,8 @@ export const Kunjungan = () => {
       })
     },
     onError: (error: BaseResponse) => {
+      console.log('[Kunjungan][Post Kunjungan] error', error);
+
       return showModalAlert({
         isVisible: true,
         title: 'Gagal Memproses Data',
@@ -122,43 +124,43 @@ export const Kunjungan = () => {
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      mutateAsyncVisitorCheck({
-        phone: values.no_hp,
-        photo: values.photo
+      return new Promise(async resolve => {
+        try {
+          const photo = await inputCamera.current?.takePhoto()
+
+          if (!photo?.faceDetection.isFaceDetected) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah tidak terdeteksi',
+              text2: 'Silahkan coba lagi'
+            })
+          }
+
+          if (photo.faceDetection.totalFaceDetected > 1) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah terdeteksi lebih dari satu',
+              text2: 'Silahkan coba lagi'
+            })
+          }
+
+          formik.setFieldValue('photo', photo.photo.path)
+
+          await mutateAsyncVisitorCheck({
+            phone: values.no_hp,
+            photo: photo.photo.path
+          })
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text2: (error as Error).message || 'Terjadi kesalahan',
+          })
+        } finally {
+          resolve(true)
+        }
       })
     }
   })
-
-  const onSubmit = async () => {
-    try {
-      const photo = await inputCamera.current?.takePhoto()
-
-      if (!photo?.faceDetection.isFaceDetected) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah tidak terdeteksi',
-          text2: 'Silahkan coba lagi'
-        })
-      }
-
-      if (photo.faceDetection.totalFaceDetected > 1) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah terdeteksi lebih dari satu',
-          text2: 'Silahkan coba lagi'
-        })
-      }
-
-      formik.setFieldValue('photo', photo.photo.path)
-      formik.handleSubmit()
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Gagal untuk registrasi',
-        text2: (error as Error).message || 'Terjadi kesaalahan'
-      })
-    }
-  }
 
   useBackHandler(() => {
     const isDirty = formik.dirty
@@ -236,7 +238,7 @@ export const Kunjungan = () => {
           <ActionButton
             primaryButtonLabel={t('visit:button.visit')}
             secondaryButtonLabel={t('visit:button.back')}
-            onPrimaryButtonPress={onSubmit}
+            onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
@@ -257,7 +259,7 @@ export const Kunjungan = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={isLoadingVisitorCheck || isLoadingKunjungan} />
+      <Loader isVisible={isLoadingKunjungan || formik.isSubmitting} />
     </>
   )
 }

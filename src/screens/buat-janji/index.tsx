@@ -32,7 +32,7 @@ export const BuatJanji = () => {
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
-  const { mutateAsync: mutateAsyncVisitorCheck, isLoading: isLoadingVisitorCheck } = useVisitorCheck({
+  const { mutateAsync: mutateAsyncVisitorCheck } = useVisitorCheck({
     onSuccess: (response) => {
       if (!response.status) {
         return showModalAlert({
@@ -49,20 +49,24 @@ export const BuatJanji = () => {
       }
 
       const { data } = response
+      const { values } = formik
+
       mutateAsyncAppointment({
         phone: data!.phone,
-        photo: formik.values.photo,
+        photo: values.photo as string,
         name: data!.name,
         visitorId: data!.visitorId,
-        employee_phone: formik.values.no_hp_tujuan,
-        start_on: dayjs(formik.values.jam_mulai).toDate(),
-        end_on: dayjs(formik.values.jam_selesai).toDate(),
-        id_keperluan: Number(formik.values.id_keperluan),
-        keperluan: formik.values.keperluan as string,
+        employee_phone: values.no_hp_tujuan,
+        start_on: dayjs(values.jam_mulai).toDate(),
+        end_on: dayjs(values.jam_selesai).toDate(),
+        id_keperluan: Number(values.id_keperluan),
+        keperluan: values.keperluan as string,
         catatan: 'DUMMY'
       })
     },
     onError: (error) => {
+      console.log('[Appointment][Visitor Check] Error', error);
+
       return showModalAlert({
         isVisible: true,
         title: 'Gagal Memproses Data',
@@ -83,8 +87,6 @@ export const BuatJanji = () => {
     mutationKey: ['appointment'],
     mutationFn: (body: AppointmentInterface) => postAppointment(body),
     onSuccess: (response) => {
-      console.log('respsonse', response);
-
       if (response.status === false) {
         return showModalAlert({
           isVisible: true,
@@ -107,9 +109,11 @@ export const BuatJanji = () => {
       })
     },
     onError: (error: BaseResponse) => {
+      console.log('[Appointment][Post Appointment] Error', error);
+
       return showModalAlert({
         isVisible: true,
-        title: 'Gagal Register',
+        title: 'Gagal Memproses Data',
         message: error.message,
         variant: 'error',
         buttonText: t('common:button.back'),
@@ -146,40 +150,53 @@ export const BuatJanji = () => {
       keperluan: '',
       jam_mulai: '',
       jam_selesai: '',
-      photo: '',
+      photo: ''
     },
     validationSchema: buatJanjiSchema,
     validateOnChange: false,
     validateOnBlur: false,
     onSubmit: (values) => {
-      mutateAsyncVisitorCheck({
-        phone: values.no_hp,
-        photo: values.photo
+      return new Promise(async resolve => {
+        try {
+          const photo = await inputCamera.current?.takePhoto()
+
+          if (!photo?.faceDetection.isFaceDetected) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah tidak terdeteksi',
+              text2: 'Silahkan coba lagi'
+            })
+          }
+
+          if (photo.faceDetection.totalFaceDetected > 1) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah terdeteksi lebih dari satu',
+              text2: 'Silahkan coba lagi'
+            })
+          }
+
+          formik.setFieldValue('photo', photo.photo.path)
+
+          await mutateAsyncVisitorCheck({
+            phone: values.no_hp,
+            photo: photo.photo.path
+          })
+        } catch (error) {
+          Toast.show({
+            type: 'error',
+            text2: (error as Error).message || 'Terjadi kesaalahan'
+          })
+        } finally {
+          resolve(true)
+        }
       })
     }
   })
 
   const onSubmit = async () => {
     try {
-      const photo = await inputCamera.current?.takePhoto()
 
-      if (!photo?.faceDetection.isFaceDetected) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah tidak terdeteksi',
-          text2: 'Silahkan coba lagi'
-        })
-      }
-
-      if (photo.faceDetection.totalFaceDetected > 1) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah terdeteksi lebih dari satu',
-          text2: 'Silahkan coba lagi'
-        })
-      }
-
-      formik.setFieldValue('photo', photo.photo.path)
       formik.handleSubmit()
     } catch (error) {
       Toast.show({
@@ -276,7 +293,7 @@ export const BuatJanji = () => {
           <ActionButton
             primaryButtonLabel={t('appointment:button.appointment')}
             secondaryButtonLabel={t('appointment:button.back')}
-            onPrimaryButtonPress={onSubmit}
+            onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
@@ -297,7 +314,7 @@ export const BuatJanji = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={isLoadingAppointment || isLoadingVisitorCheck} />
+      <Loader isVisible={isLoadingAppointment || formik.isSubmitting} />
     </>
   )
 }

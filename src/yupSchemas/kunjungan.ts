@@ -8,5 +8,5 @@ export const kunjunganSchema = yup.object().shape({
     then: (schema) => schema.required('Keperluan lainnya harus diisi'),
     otherwise: (schema) => schema.optional()
   }),
-  photo: yup.string().required('Foto harus diisi')
+  photo: yup.string()
 });
