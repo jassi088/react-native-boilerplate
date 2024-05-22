@@ -110,46 +110,47 @@ export const Register = () => {
     validationSchema: registerSchema,
     validateOnChange: false,
     validateOnBlur: false,
-    onSubmit: (values) => {
-      mutateAsyncRegister({
-        ...formik.values,
-        phone: formik.values.no_hp,
-        name: formik.values.nama,
-        is_asn: formik.values.tipe_pengunjung === 'asn',
-      } as unknown as PostRegisterInterface)
-    }
-  })
+    onSubmit: async (values) => {
+      return new Promise(async resolve => {
+        try {
+          const photo = await inputCamera.current?.takePhoto()
 
-  const onSubmit = async () => {
-    try {
-      const photo = await inputCamera.current?.takePhoto()
+          if (!photo?.faceDetection.isFaceDetected) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah tidak terdeteksi',
+              text2: 'Silahkan coba lagi'
+            })
+          }
 
-      if (!photo?.faceDetection.isFaceDetected) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah tidak terdeteksi',
-          text2: 'Silahkan coba lagi'
-        })
-      }
+          if (photo.faceDetection.totalFaceDetected > 1) {
+            return Toast.show({
+              type: 'error',
+              text1: 'Wajah terdeteksi lebih dari satu',
+              text2: 'Silahkan coba lagi'
+            })
+          }
 
-      if (photo.faceDetection.totalFaceDetected > 1) {
-        return Toast.show({
-          type: 'error',
-          text1: 'Wajah terdeteksi lebih dari satu',
-          text2: 'Silahkan coba lagi'
-        })
-      }
-
-      formik.setFieldValue('photo', photo.photo.path)
-      formik.handleSubmit()
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Gagal untuk registrasi',
-        text2: (error as Error).message || 'Terjadi kesaalahan'
+          await mutateAsyncRegister({
+            ...values,
+            phone: values.no_hp,
+            name: values.nama,
+            is_asn: values.tipe_pengunjung === 'asn',
+            photo: photo.photo.path,
+          } as unknown as PostRegisterInterface)
+        } catch (error) {
+          console.log('error', error);
+          Toast.show({
+            type: 'error',
+            text1: 'Gagal memproses data',
+            text2: (error as Error).message
+          })
+        } finally {
+          resolve(true)
+        }
       })
     }
-  }
+  })
 
   return (
     <>
@@ -231,7 +232,7 @@ export const Register = () => {
           <ActionButton
             primaryButtonLabel={t('register:button.register')}
             secondaryButtonLabel={t('register:button.back')}
-            onPrimaryButtonPress={onSubmit}
+            onPrimaryButtonPress={() => formik.handleSubmit()}
             onSecondaryButtonPress={() => {
               const isDirty = formik.dirty
               if (isDirty) {
@@ -252,7 +253,7 @@ export const Register = () => {
           />
         </View>
       </SafeAreaView>
-      <Loader isVisible={isLoadingRegister} />
+      <Loader isVisible={formik.isSubmitting} />
     </>
   )
 }
