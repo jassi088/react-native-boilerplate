@@ -51,7 +51,6 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
   const handleDetectedFaces = Worklets.createRunOnJS((
     faces: Face[]
   ) => {
-    console.log('faces detected', faces)
     if (faces.length === 0) {
       setDescription({
         color: colors.red[500],
@@ -139,7 +138,7 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
   if (!device || !hasPermission) {
     return (
       <View className="flex items-center justify-center flex-1 h-full mb-12">
-        <View className="w-64 h-64 p-4 rounded-md flex items-center justify-center bg-gray-300">
+        <View className="w-52 h-52 p-4 rounded-md flex items-center justify-center bg-gray-300">
           <Text
             label={t('input:camera.noPermission')}
             variant="large"
@@ -161,14 +160,14 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
 
   return (
     <View className="flex items-center justify-center flex-1 h-full">
-      <View className="rounded">
+      <View className="rounded relative bg-yellow-500">
+        <View className="w-[216px] h-[216px] absolute top-[-4px] left-[-4px] bg-transparent z-10 border-4 border-gray-100 rounded-xl" />
         <Camera
-          // @ts-ignore
           ref={cameraRef}
           device={device}
           isActive={true}
           photo={true}
-          className="w-64 h-64 rounded-md"
+          className="w-52 h-52 rounded-lg"
           orientation={cameraOrientation}
           onError={(error) => Toast.show({
             type: 'error',
@@ -184,7 +183,6 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
           color={description.color}
           textAlign="center"
           className="mt-3"
-          variant="large"
         />
       )}
     </View>

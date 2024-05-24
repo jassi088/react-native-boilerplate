@@ -218,7 +218,7 @@ export const BuatJanji = () => {
                 label={t('appointment:description')}
                 textClassName='mb-5'
               />
-              <View className="w-full h-72 mb-12">
+              <View className="w-full h-64 mb-8">
                 <InputCamera ref={inputCamera} />
               </View>
               <InputText
