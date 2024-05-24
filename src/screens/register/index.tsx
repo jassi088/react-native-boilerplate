@@ -115,16 +115,16 @@ export const Register = () => {
           if (!photo?.faceDetection.isFaceDetected) {
             return Toast.show({
               type: 'error',
-              text1: 'Wajah tidak terdeteksi',
-              text2: 'Silahkan coba lagi'
+              text1: t('common:camera.failed'),
+              text2: t('common:camera.noFaces'),
             })
           }
 
           if (photo.faceDetection.totalFaceDetected > 1) {
             return Toast.show({
               type: 'error',
-              text1: 'Wajah terdeteksi lebih dari satu',
-              text2: 'Silahkan coba lagi'
+              text1: t('common:camera.failed'),
+              text2: t('common:camera.tooManyFaces'),
             })
           }
 
@@ -140,7 +140,7 @@ export const Register = () => {
 
           Toast.show({
             type: 'error',
-            text1: 'Gagal memproses data',
+            text1: t('common:camera.failed'),
             text2: (error as Error).message
           })
         } finally {

@@ -6,6 +6,7 @@
     "back": "Kembali"
   },
   "camera": {
+    "failed": "Gagal",
     "noFaces": "Tidak ada wajah terdeteksi",
     "tooManyFaces": "Terlalu banyak wajah terdeteksi",
     "faceDetected": "Wajah terdeteksi"

@@ -6,6 +6,7 @@
     "back": "Back"
   },
   "camera": {
+    "failed": "Failed",
     "noFaces": "No faces detected",
     "tooManyFaces": "Too many faces detected",
     "faceDetected": "Face detected"
