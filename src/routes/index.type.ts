@@ -1,3 +1,4 @@
+import { Screensaver } from '../screens/screensaver/index';
 export type RootStackParamList = {
   Splash: undefined;
   Register: undefined;
@@ -5,4 +6,5 @@ export type RootStackParamList = {
   Kunjungan: undefined;
   BuatJanji: undefined;
   Setting: undefined;
+  Screensaver: undefined;
 };

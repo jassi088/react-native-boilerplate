@@ -5,6 +5,9 @@
     "cancel": "Batal",
     "back": "Kembali"
   },
+  "label": {
+    "clickAnywhereToStart": "Klik di mana saja untuk memulai"
+  },
   "camera": {
     "failed": "Gagal",
     "noFaces": "Tidak ada wajah terdeteksi",

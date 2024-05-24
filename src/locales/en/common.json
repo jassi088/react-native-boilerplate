@@ -5,6 +5,9 @@
     "cancel": "Cancel",
     "back": "Back"
   },
+  "label": {
+    "clickAnywhereToStart": "Click anywhere to start"
+  },
   "camera": {
     "failed": "Failed",
     "noFaces": "No faces detected",
