@@ -6,6 +6,13 @@ import { useTranslation } from "react-i18next"
 import { Linking, View } from "react-native"
 import Toast from "react-native-toast-message"
 import { Camera, useCameraDevice, CameraDevice, useCameraPermission, CameraPermissionRequestResult, Frame, PhotoFile, useFrameProcessor } from "react-native-vision-camera"
+import {
+  Face,
+  useFaceDetector,
+  FaceDetectionOptions
+} from 'react-native-vision-camera-face-detector'
+import { Worklets } from 'react-native-worklets-core'
+import colors from "tailwindcss/colors"
 
 export type InputCameraHandle = {
   takePhoto: () => Promise<{
@@ -18,9 +25,17 @@ export type InputCameraHandle = {
   }>
 }
 export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
-  const [message, setMessage] = useState<undefined | {
+  const faceDetectionOptions = useRef<FaceDetectionOptions>({
+    performanceMode: 'accurate',
+    minFaceSize: 0.7
+  }).current
+
+  const { detectFaces } = useFaceDetector(faceDetectionOptions)
+
+  const [description, setDescription] = useState<undefined | {
     color: string
-    message: string
+    message: string,
+    totalFaceDetected: number
   }>(undefined)
 
   const { t } = useTranslation(['input'])
@@ -32,6 +47,42 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
   const { showModalAlert, closeModalAlert } = useModalAlert()
 
   const device: CameraDevice | undefined = useCameraDevice(cameraPosition)
+
+  const handleDetectedFaces = Worklets.createRunOnJS((
+    faces: Face[]
+  ) => {
+    console.log('faces detected', faces)
+    if (faces.length === 0) {
+      setDescription({
+        color: colors.red[500],
+        message: t('common:camera.noFaces'),
+        totalFaceDetected: 0
+      })
+    }
+
+    if (faces.length > 1) {
+      setDescription({
+        color: colors.red[500],
+        message: t('common:camera.tooManyFaces'),
+        totalFaceDetected: faces.length
+      })
+    }
+
+    if (faces.length === 1) {
+      setDescription({
+        color: colors.green[500],
+        message: t('common:camera.faceDetected'),
+        totalFaceDetected: faces.length
+      })
+    }
+  })
+
+
+  const frameProcessor = useFrameProcessor((frame) => {
+    'worklet'
+    const faces = detectFaces(frame)
+    handleDetectedFaces(faces)
+  }, [handleDetectedFaces])
 
   const getPermission = async () => {
     try {
@@ -69,13 +120,9 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
     return {
       photo: photo as PhotoFile,
       faceDetection: {
-        // message: message?.message || undefined,
-        // isFaceDetected: message?.color === colors.green[500],
-        // totalFaceDetected: message?.color === colors.green[500] ? 1 : 0,
-        // TODO: FIX THIS WITH FACE DETECTION
-        message: undefined,
-        isFaceDetected: true,
-        totalFaceDetected: 1
+        message: description?.message || undefined,
+        isFaceDetected: description && description?.totalFaceDetected > 0 || false,
+        totalFaceDetected: description?.totalFaceDetected || 0
       }
     }
   }
@@ -128,12 +175,13 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
             text1: 'Something went wrong on Camera!',
             text2: error.message
           })}
+          frameProcessor={frameProcessor}
         />
       </View>
-      {message && (
+      {description && (
         <Text
-          label={message.message}
-          color={message.color}
+          label={description.message}
+          color={description.color}
           textAlign="center"
           className="mt-3"
           variant="large"

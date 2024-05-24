@@ -4,5 +4,10 @@
     "no": "No",
     "cancel": "Cancel",
     "back": "Back"
+  },
+  "camera": {
+    "noFaces": "No faces detected",
+    "tooManyFaces": "Too many faces detected",
+    "faceDetected": "Face detected"
   }
 }
