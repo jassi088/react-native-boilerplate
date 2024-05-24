@@ -6618,6 +6618,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-background-timer@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-background-timer/-/react-native-background-timer-2.4.1.tgz#a3bc1cafa8c1e3aeefd0611de120298b67978a0f"
+  integrity sha512-TE4Kiy7jUyv+hugxDxitzu38sW1NqjCk4uE5IgU2WevLv7sZacaBc6PZKOShNRPGirLl1NWkaG3LDEkdb9Um5g==
+
 react-native-fs@^2.20.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-native-fs/-/react-native-fs-2.20.0.tgz#05a9362b473bfc0910772c0acbb73a78dbc810f6"
@@ -6690,6 +6695,13 @@ react-native-toast-message@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-native-toast-message/-/react-native-toast-message-2.2.0.tgz#c53a4746b15616858a7d61c4386b92cbe9fbf911"
   integrity sha512-AFti8VzUk6JvyGAlLm9/BknTNDXrrhqnUk7ak/pM7uCTxDPveAu2ekszU0on6vnUPFnG04H/QfYE2IlETqeaWw==
+
+react-native-user-inactivity@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-user-inactivity/-/react-native-user-inactivity-1.2.0.tgz#b0123951b89db9939eec07cffab724f7e76edcc6"
+  integrity sha512-VR+zv+cKBOSbJyHLJxvDUVluQ4OD/uW9FomAJVWrXCnSO4tYQieaAR3/5oNIfr6JXAJ/ChdJ/eyc06vHEBvlsA==
+  dependencies:
+    usetimeout-react-hook "^0.1.2"
 
 react-native-vector-icons@^10.0.3:
   version "10.0.3"
@@ -7850,6 +7862,11 @@ use-sync-external-store@1.2.0, use-sync-external-store@^1.1.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"
   integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
+
+usetimeout-react-hook@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/usetimeout-react-hook/-/usetimeout-react-hook-0.1.2.tgz#fdeaff9b8fe2b5e5b8d29a3ef9c4054368711c03"
+  integrity sha512-uHc8QsWDznEhWkK+ygX0xWxyObRjy72685EZ5wr3/ipNsK0EYntGnbenKxLNirPKKsng+1KW5CPTAk7qQDY8VQ==
 
 utf8@^3.0.0:
   version "3.0.0"

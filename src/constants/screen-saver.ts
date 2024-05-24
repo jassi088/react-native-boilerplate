@@ -1,0 +1,1 @@
+export const TIMEOUT_SCREENSAVER = 60000;
