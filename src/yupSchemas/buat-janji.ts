@@ -12,5 +12,7 @@ export const buatJanjiSchema = yup.object().shape({
     then: (schema) => schema.required('Keperluan lainnya harus diisi'),
     otherwise: (schema) => schema.optional()
   }),
-  photo: yup.string()
+  photo: yup.string(),
+  visitorId: yup.string().required(),
+  name: yup.string().required('Nama harus diisi')
 });

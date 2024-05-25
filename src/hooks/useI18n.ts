@@ -1,6 +1,6 @@
 import i18n, { InitOptions } from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { EnAppointment, EnCommon, EnInput, EnMenu, EnRegister, EnSetting, EnVisit } from '@/locales/en';
+import { EnAppointment, EnCommon, EnInput, EnMenu, EnRegister, EnSetting, EnVisit, EnVisitorCheck } from '@/locales/en';
 import {
   BahasaAppointment,
   BahasaCommon,
@@ -8,7 +8,8 @@ import {
   BahasaMenu,
   BahasaRegister,
   BahasaSetting,
-  BahasaVisit
+  BahasaVisit,
+  BahasaVisitorCheck
 } from '@/locales/id';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { STORAGE_KEY } from '@/constants/storage-key';
@@ -34,7 +35,8 @@ export const useI18n = () => {
     menu: EnMenu,
     setting: EnSetting,
     input: EnInput,
-    common: EnCommon
+    common: EnCommon,
+    visitorCheck: EnVisitorCheck
   };
 
   const bahasaResources = {
@@ -44,7 +46,8 @@ export const useI18n = () => {
     menu: BahasaMenu,
     setting: BahasaSetting,
     input: BahasaInput,
-    common: BahasaCommon
+    common: BahasaCommon,
+    visitorCheck: BahasaVisitorCheck
   };
 
   const resources = {

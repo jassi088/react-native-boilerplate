@@ -8,7 +8,9 @@ import { useModalAlert, useModalConfirmation, useUserInactivity } from '@/hooks'
 import Toast, { ToastConfig } from 'react-native-toast-message';
 import { toastConfig } from '@/components/atoms/toast';
 import UserInactivity from 'react-native-user-inactivity';
-import { TIMEOUT_SCREENSAVER } from '@/constants/screen-saver';
+import { TIMEOUT_SCREENSAVER } from '@/constants/screensaver';
+import { VisitorCheck } from '@/screens/visitor-check';
+import { Menu } from '@/screens/menu';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -51,6 +53,8 @@ export const Routes = () => {
           <Stack.Screen name="BuatJanji" component={BuatJanji} />
           <Stack.Screen name="Setting" component={Setting} />
           <Stack.Screen name="Screensaver" component={Screensaver} />
+          <Stack.Screen name="VisitorCheck" component={VisitorCheck} />
+          <Stack.Screen name="Menu" component={Menu} />
         </Stack.Navigator>
         <ScreenSaverProvider isActive={isActive} />
       </UserInactivity>

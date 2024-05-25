@@ -1,4 +1,3 @@
-import { ModalAlertProps } from '@/components/atoms/modal-alert/index.type';
 import { create } from 'zustand';
 
 interface UseRegisterProps {

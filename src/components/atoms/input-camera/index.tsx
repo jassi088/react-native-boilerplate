@@ -24,10 +24,17 @@ export type InputCameraHandle = {
     }
   }>
 }
-export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
+
+export type InputCameraProps = {
+  height?: number
+  width?: number
+}
+export const InputCamera = forwardRef<InputCameraHandle, InputCameraProps>((props, ref) => {
+  const { height = 208, width = 208 } = props
+
   const faceDetectionOptions = useRef<FaceDetectionOptions>({
     performanceMode: 'accurate',
-    minFaceSize: 0.7
+    minFaceSize: 0.85
   }).current
 
   const { detectFaces } = useFaceDetector(faceDetectionOptions)
@@ -160,8 +167,14 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
 
   return (
     <View className="flex items-center justify-center flex-1 h-full">
-      <View className="rounded relative bg-yellow-500">
-        <View className="w-[216px] h-[216px] absolute top-[-4px] left-[-4px] bg-transparent z-10 border-4 border-gray-100 rounded-xl" />
+      <View className="rounded relative">
+        <View className="absolute bg-transparent z-10 border-4 border-gray-100 rounded-xl"
+          style={{
+            height: height + 8,
+            width: width + 8,
+            top: -4,
+            left: -4
+          }} />
         <Camera
           ref={cameraRef}
           device={device}
@@ -175,6 +188,10 @@ export const InputCamera = forwardRef<InputCameraHandle>((_, ref) => {
             text2: error.message
           })}
           frameProcessor={frameProcessor}
+          style={{
+            height,
+            width
+          }}
         />
       </View>
       {description && (

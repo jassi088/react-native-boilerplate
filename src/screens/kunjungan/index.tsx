@@ -1,14 +1,14 @@
-import React, { useRef } from 'react'
-import { ScrollView, View } from 'react-native'
+import React from 'react'
+import { Image, ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputCamera, InputCameraHandle, InputSelect, InputText } from '@/components/atoms'
+import { InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
-import { useNavigation } from '@react-navigation/native'
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFormik } from 'formik'
 import { kunjunganSchema } from '@/yupSchemas'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation, useRegister, useVisitorCheck } from '@/hooks'
+import { useModalAlert, useModalConfirmation } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import Toast from 'react-native-toast-message'
@@ -18,56 +18,18 @@ import { useMutation, useQuery } from 'react-query'
 import { postKunjungan, PostKunjunganInterface } from '@/endpoints/POST_Kunjungan'
 import { BaseResponse } from '@/interfaces/BaseResponse'
 import { getPurpose } from '@/endpoints/GET_Purpose'
+import { RootStackParamList } from '@/routes/index.type'
 
 type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
 export const Kunjungan = () => {
   const navigation = useNavigation()
+  const { params: { phone, photo, visitorId } } = useRoute<RouteProp<RootStackParamList, 'Kunjungan'>>();
+
   const { t } = useTranslation(['visit', 'common'])
-  const { setNavigateAfterRegister } = useRegister()
-  const inputCamera = useRef<InputCameraHandle>(null)
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
-
-  const { mutateAsync: mutateAsyncVisitorCheck } = useVisitorCheck({
-    onSuccess: (response) => {
-      if (!response.status) {
-        return showModalAlert({
-          isVisible: true,
-          message: response.message,
-          variant: 'error',
-          buttonText: t('common:button.back'),
-          onPress: () => {
-            closeModalAlert();
-            setNavigateAfterRegister('Kunjungan')
-            navigation.navigate('Register')
-          }
-        })
-      }
-
-      const { data } = response
-      mutateAsyncKunjungan({
-        phone: data!.phone,
-        visitor_id: data!.visitorId,
-        id_keperluan: Number(formik.values.id_keperluan),
-        keperluan: formik.values.keperluan,
-        photo: formik.values.photo as string
-      })
-    },
-    onError: (error) => {
-      console.log('[Kunjungan][Visitor Check] error', error);
-
-      return showModalAlert({
-        isVisible: true,
-        title: 'Gagal Memproses Data',
-        message: error.message,
-        variant: 'error',
-        buttonText: t('common:button.back'),
-        onPress: () => closeModalAlert()
-      })
-    }
-  })
 
   const { data: dataPurpose } = useQuery({
     queryKey: ['purpose'],
@@ -95,7 +57,8 @@ export const Kunjungan = () => {
         buttonText: t('common:button.back'),
         onPress: () => {
           closeModalAlert()
-          navigation.goBack()
+          // @ts-ignore
+          navigation.replace('Home')
         }
       })
     },
@@ -115,10 +78,11 @@ export const Kunjungan = () => {
 
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
-      no_hp: '',
+      no_hp: phone,
       keperluan: '',
       id_keperluan: '',
-      photo: ''
+      photo: photo.path,
+      visitorId: visitorId || ''
     },
     validationSchema: kunjunganSchema,
     validateOnChange: false,
@@ -126,29 +90,12 @@ export const Kunjungan = () => {
     onSubmit: (values) => {
       return new Promise(async resolve => {
         try {
-          const photo = await inputCamera.current?.takePhoto()
-
-          if (!photo?.faceDetection.isFaceDetected) {
-            return Toast.show({
-              type: 'error',
-              text1: t('common:camera.failed'),
-              text2: t('common:camera.noFaces'),
-            })
-          }
-
-          if (photo.faceDetection.totalFaceDetected > 1) {
-            return Toast.show({
-              type: 'error',
-              text1: t('common:camera.failed'),
-              text2: t('common:camera.tooManyFaces'),
-            })
-          }
-
-          formik.setFieldValue('photo', photo.photo.path)
-
-          await mutateAsyncVisitorCheck({
+          mutateAsyncKunjungan({
             phone: values.no_hp,
-            photo: photo.photo.path
+            visitor_id: values.visitorId,
+            id_keperluan: Number(formik.values.id_keperluan),
+            keperluan: formik.values.keperluan,
+            photo: formik.values.photo as string
           })
         } catch (error) {
           Toast.show({
@@ -193,25 +140,33 @@ export const Kunjungan = () => {
                 label={t('visit:description')}
                 textClassName='mb-5'
               />
-              <View className="w-full h-64 mb-8">
-                <InputCamera ref={inputCamera} />
+              <View className="w-full h-64 mb-8 flex items-center justify-center">
+                <Image
+                  source={{ uri: 'file://' + photo.path }}
+                  style={{ width: 240, height: 240 }}
+                  className='rounded-lg'
+                />
               </View>
-              <InputText
-                label={t('visit:label.phone')}
-                placeholder={t('visit:placeholder.phone')}
-                value={formik.values.no_hp}
-                onChangeText={formik.handleChange('no_hp')}
-                error={formik.errors.no_hp}
-                containerClassName='mb-4'
-                keyboardType='numeric'
-              />
+              <View className='mb-3'>
+                <Text
+                  label={t('visit:label.phone')}
+                />
+                <Text
+                  label={formik.values.no_hp}
+                  className='py-2'
+                  variant='large'
+                  fontWeight='semi-bold'
+                />
+              </View>
               <InputSelect
                 label={t('visit:label.needs')}
                 placeholder={t('visit:placeholder.needs')}
                 value={formik.values.id_keperluan}
                 onChange={data => {
                   formik.setFieldValue('id_keperluan', String(data.value))
-                  if (data.value !== 5) {
+                  if (data.value == 5) {
+                    formik.setFieldValue('keperluan', String(''))
+                  } else {
                     formik.setFieldValue('keperluan', String(data.label))
                   }
                 }}

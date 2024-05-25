@@ -1,5 +1,5 @@
 import 'react-i18next';
-import { EnAppointment, EnCommon, EnInput, EnMenu, EnRegister, EnSetting, EnVisit } from '@/locales/en';
+import { EnAppointment, EnCommon, EnInput, EnMenu, EnRegister, EnSetting, EnVisit, EnVisitorCheck } from '@/locales/en';
 
 declare module 'react-i18next' {
   interface CustomTypeOptions {
@@ -12,7 +12,8 @@ declare module 'react-i18next' {
       setting: typeof EnSetting;
       visit: typeof EnVisit;
       input: typeof EnInput;
-      bahasa: typeof EnCommon;
+      common: typeof EnCommon;
+      visitorCheck: typeof EnVisitorCheck;
     };
   }
 }

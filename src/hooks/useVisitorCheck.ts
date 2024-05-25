@@ -7,7 +7,6 @@ export function useVisitorCheck(
 ) {
   return useMutation({
     ...params,
-    // @ts-ignore
     mutationKey: ['visitor-check'],
     mutationFn: (body: VisitorCheckInterface) => postVisitorCheck(body)
   });

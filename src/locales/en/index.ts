@@ -5,3 +5,4 @@ export { default as EnVisit } from './visit.json';
 export { default as EnAppointment } from './appointment.json';
 export { default as EnInput } from './input.json';
 export { default as EnCommon } from './common.json';
+export { default as EnVisitorCheck } from './visitor-check.json';

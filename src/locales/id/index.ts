@@ -5,3 +5,4 @@ export { default as BahasaVisit } from './visit.json';
 export { default as BahasaAppointment } from './appointment.json';
 export { default as BahasaInput } from './input.json';
 export { default as BahasaCommon } from './common.json';
+export { default as BahasaVisitorCheck } from './visitor-check.json';

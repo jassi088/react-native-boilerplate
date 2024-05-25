@@ -4,7 +4,7 @@ import colors from "tailwindcss/colors"
 
 
 const DUMMY_IMAGES = [
-  'https://dcktrp.jakarta.go.id/beranda/v.2/api/image?image=https%3A%2F%2Fdcktrp.jakarta.go.id%2Fweb-dcktrp-be%2Fstorage%2Flayanan%2Fbanner%2FSlider2.jpg&height=600&quality=80',
+  'https://dcktrp.jakarta.go.id/beranda/v.2/api/image?image=https%3A%2F%2Fdcktrp.jakarta.go.id%2Fweb-dcktrp-be%2Fstorage%2Flayanan%2Fbanner%2FSlider5.jpg&height=600&quality=80',
   'https://dcktrp.jakarta.go.id/beranda/v.2/api/image?image=https%3A%2F%2Fdcktrp.jakarta.go.id%2Fweb-dcktrp-be%2Fstorage%2Flayanan%2Fbanner%2FSlider3.jpg&height=600&quality=80'
 ]
 
@@ -26,7 +26,7 @@ export const ImageSlider = (props: ImageSliderProps) => {
         showHeader={true}
         preview={true}
         caroselImageContainerStyle={{ height }}
-        caroselImageStyle={{ resizeMode: 'cover', borderRadius: 16 }}
+        caroselImageStyle={{ resizeMode: 'cover', borderRadius: 16, height }}
         indicatorContainerStyle={{ position: 'absolute', bottom: 0 }}
         activeIndicatorStyle={{ backgroundColor: colors.blue[600] }}
         inActiveIndicatorStyle={{ backgroundColor: colors.gray[400] }}

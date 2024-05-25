@@ -1,78 +1,93 @@
-import { ImageSlider, LanguageSwitcher, Text } from "@/components/atoms"
+import { Button, InputCamera, InputCameraHandle, LanguageSwitcher, Loader, Text } from "@/components/atoms"
 import { HeaderTime } from "@/components/molecules"
+import { useModalAlert, useRegister, useVisitorCheck } from "@/hooks"
 import { useNavigation } from "@react-navigation/native"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { useTranslation } from "react-i18next"
-import { TouchableOpacity, View } from "react-native"
+import { useWindowDimensions, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Entypo from 'react-native-vector-icons/Entypo'
-import colors from "tailwindcss/colors"
-
-type CardProps = {
-  label: string
-  icon: JSX.Element
-  onPress: () => void
-}
+import Toast from "react-native-toast-message"
 
 export const Home = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(["menu"])
+  const cameraRef = useRef<InputCameraHandle>(null)
 
-  const [sliderHeight, setSliderHeight] = useState<number>(0)
+  const { width } = useWindowDimensions()
 
-  const Card = ({ label, icon, onPress }: CardProps) => (
-    <TouchableOpacity
-      activeOpacity={0.7}
-      onPress={onPress}
-      className="flex flex-col items-center justify-center border border-blue-600 rounded-md p-5 bg-gray-50"
-    >
-      {icon}
-      <Text label={label} textClassName="mt-2" />
-    </TouchableOpacity>
-  )
+  const { showModalAlert, closeModalAlert } = useModalAlert()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  const handleStart = async () => {
+    try {
+      setIsLoading(true)
+      const photo = await cameraRef.current?.takePhoto()
+
+      if (!photo?.faceDetection.isFaceDetected) {
+        return showModalAlert({
+          isVisible: true,
+          title: t('common:camera.failed'),
+          message: t('common:camera.noFaces'),
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => closeModalAlert()
+        })
+      }
+
+      if (photo.faceDetection.totalFaceDetected > 1) {
+        return showModalAlert({
+          isVisible: true,
+          title: t('common:camera.failed'),
+          message: t('common:camera.tooManyFaces'),
+          variant: 'error',
+          buttonText: t('common:button.back'),
+          onPress: () => closeModalAlert()
+        })
+      }
+
+      navigation.navigate('VisitorCheck', {
+        photo: photo.photo
+      })
+    } catch (error) {
+      console.log('[Home][Error]', error)
+      Toast.show({
+        type: 'error',
+        text1: t('common:camera.failed'),
+        text2: (error as Error).message,
+        position: 'bottom',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const cameraWidth = width * 0.7
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <HeaderTime
-        onPress={() => navigation.navigate('Setting')}
-      />
-      <View className="space-y-5 p-4 flex-1">
-        <View
-          className="flex flex-1 mb-5"
-          onLayout={event => {
-            const { height } = event.nativeEvent.layout
-            setSliderHeight(height)
-          }}
-        >
-          <ImageSlider
-            height={sliderHeight}
+    <SafeAreaView className="flex-1 bg-gray-100">
+      <HeaderTime />
+      <View className="space-y-5 p-4 flex-1 justify-center items-center">
+        <View className="w-full h-64 mb-4">
+          <InputCamera ref={cameraRef} height={cameraWidth} width={cameraWidth} />
+        </View>
+        <View className="mb-10">
+          <Text
+            label={t('register:description')}
+            textClassName='mb-5'
+            textAlign="center"
+            fontWeight="semi-bold"
           />
         </View>
-        <Card
-          label={t('menu:register')}
-          icon={<AntDesign name="adduser" size={40} color={colors.blue[600]} />}
-          onPress={() => navigation.navigate('Register')}
-        />
-        <View className="flex flex-row items-center mb-4">
-          <View className="flex-1">
-            <Card
-              label={t('menu:visit')}
-              icon={<AntDesign name="calendar" size={40} color={colors.blue[600]} />}
-              onPress={() => navigation.navigate('Kunjungan')}
-            />
-          </View>
-          <View className="w-4" />
-          <View className="flex-1">
-            <Card
-              label={t('menu:appointment')}
-              icon={<Entypo name="add-to-list" size={40} color={colors.blue[600]} />}
-              onPress={() => navigation.navigate('BuatJanji')}
-            />
-          </View>
+        <View className="w-full">
+          <Button
+            label={t('common:label.start')}
+            variant="background"
+            onPress={handleStart}
+          />
         </View>
-        <LanguageSwitcher />
       </View>
+      <LanguageSwitcher />
+      <Loader isVisible={isLoading} />
     </SafeAreaView>
   )
 }

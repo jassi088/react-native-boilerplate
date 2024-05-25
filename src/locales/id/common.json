@@ -6,7 +6,8 @@
     "back": "Kembali"
   },
   "label": {
-    "clickAnywhereToStart": "Klik di mana saja untuk memulai"
+    "clickAnywhereToStart": "Klik di mana saja untuk memulai",
+    "start": "Mulai"
   },
   "camera": {
     "failed": "Gagal",

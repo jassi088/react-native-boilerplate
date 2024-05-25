@@ -1,0 +1,28 @@
+{
+  "title": "Form Cek Pengunjung",
+  "description": "Silahkan masukkan No. HP Anda",
+  "label": {
+    "phone": "No. HP"
+  },
+  "placeholder": {
+    "phone": "Masukkan No. HP"
+  },
+  "button": {
+    "visitorCheck": "Check",
+    "back": "Kembali"
+  },
+  "modalConfirmation": {
+    "title": "Batal",
+    "description": "Apakah Anda yakin ingin membatalkan ini?",
+    "button": {
+      "yes": "Ya",
+      "no": "Tidak"
+    }
+  },
+  "alert": {
+    "notRegistered": {
+      "title": "No. HP tidak terdaftar",
+      "message": "No. HP tidak terdaftar, silahkan registrasi terlebih dahulu"
+    }
+  }
+}

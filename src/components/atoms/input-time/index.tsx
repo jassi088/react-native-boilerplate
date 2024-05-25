@@ -88,6 +88,7 @@ export const InputTime = (props: InputTimeInterface) => {
             text2: error.message
           })}
           is24Hour={is24Hour}
+          minuteInterval={5}
         />
       )}
     </View>

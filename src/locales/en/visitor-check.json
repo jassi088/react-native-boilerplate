@@ -1,0 +1,28 @@
+{
+  "title": "Visitor Check Form",
+  "description": "Please enter your phone number to check in",
+  "label": {
+    "phone": "Your Phone"
+  },
+  "placeholder": {
+    "phone": "Enter Your Phone Number"
+  },
+  "button": {
+    "visitorCheck": "Check",
+    "back": "Back"
+  },
+  "modalConfirmation": {
+    "title": "Cancel",
+    "description": "Are you sure you want to cancel this?",
+    "button": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  },
+  "alert": {
+    "notRegistered": {
+      "title": "Phone not registered",
+      "message": "Phone number is not registered, please register"
+    }
+  }
+}

@@ -3,15 +3,9 @@ import { HeaderTime } from "@/components/molecules"
 import { useNavigation } from "@react-navigation/native"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-import { TouchableOpacity, View } from "react-native"
+import { Alert, Touchable, TouchableOpacity, View } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import colors from "tailwindcss/colors"
-
-type CardProps = {
-  label: string
-  icon: JSX.Element
-  onPress: () => void
-}
 
 export const Screensaver = () => {
   const navigation = useNavigation()
@@ -23,7 +17,6 @@ export const Screensaver = () => {
     <SafeAreaView className="flex-1 bg-white">
       <HeaderTime />
       <TouchableOpacity
-        activeOpacity={0.9}
         className="space-y-5 p-4 flex-1"
         onPress={() => navigation.navigate('Home')}
       >
@@ -36,18 +29,9 @@ export const Screensaver = () => {
         >
           <ImageSliderScreenSaver
             height={sliderHeight}
+            onClick={() => navigation.navigate('Home')}
           />
         </View>
-        <View>
-          <Text
-            label={t('common:label.clickAnywhereToStart')}
-            className="text-center py-6"
-            variant="extra-large"
-            fontWeight="semi-bold"
-            color={colors.blue[600]}
-          />
-        </View>
-        <LanguageSwitcher />
       </TouchableOpacity>
     </SafeAreaView>
   )

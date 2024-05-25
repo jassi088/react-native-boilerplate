@@ -2,6 +2,7 @@
   "title": "Appointment Form",
   "description": "Please stand up straight and face the camera",
   "label": {
+    "name": "Your Name",
     "phone": "Your Phone",
     "phoneDestination": "Phone Destination",
     "needs": "Needs",
@@ -10,6 +11,7 @@
     "endHour": "End Hour"
   },
   "placeholder": {
+    "name": "Enter Your Name",
     "phone": "Enter Your Phone Number",
     "phoneDestination": "Enter Phone Destination",
     "needs": "Choose Needs",

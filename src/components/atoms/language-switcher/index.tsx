@@ -10,7 +10,7 @@ export const LanguageSwitcher = () => {
   const { t, i18n } = useTranslation(['menu'])
 
   return (
-    <View>
+    <View className="pb-4">
       <Text label={t('menu:chooseLanguage')} textAlign="center" textClassName="mb-3" fontWeight="semi-bold" />
       <View className="flex flex-row items-center justify-center">
         <TouchableOpacity
