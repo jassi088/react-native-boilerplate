@@ -1,1 +1,1 @@
-export const TIMEOUT_SCREENSAVER = 65000;
+export const TIMEOUT_SCREENSAVER = 125000;
