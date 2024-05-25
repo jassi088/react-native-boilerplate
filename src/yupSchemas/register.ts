@@ -2,7 +2,7 @@ import { TIPE_PENGUNJUNG } from '@/constants/tipe-pengunjung';
 import * as yup from 'yup';
 
 export const registerSchema = yup.object().shape({
-  tipe_pengunjung: yup
+  visitorType: yup
     .string()
     .required('Tipe Pengunjung harus diisi')
     .oneOf(
@@ -10,7 +10,7 @@ export const registerSchema = yup.object().shape({
       'Tipe Pengunjung tidak valid'
     ),
   nama: yup.string().required('Nama harus diisi'),
-  no_hp: yup.string().required('Nomor Handphone harus diisi'),
+  phone: yup.string().required('Nomor Handphone harus diisi'),
   email: yup.string().email('Email tidak valid').required('Email harus diisi'),
   nik: yup.string().when('tipe_pengunjung', {
     is: 'non-asn',

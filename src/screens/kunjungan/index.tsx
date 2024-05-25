@@ -1,7 +1,7 @@
 import React from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputSelect, InputText } from '@/components/atoms'
+import { Infoplist, InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -24,7 +24,7 @@ type KunjunganPayload = yup.InferType<typeof kunjunganSchema>
 
 export const Kunjungan = () => {
   const navigation = useNavigation()
-  const { params: { phone, photo, visitorId } } = useRoute<RouteProp<RootStackParamList, 'Kunjungan'>>();
+  const { params: { phone, photo, visitorId, is_asn, uid } } = useRoute<RouteProp<RootStackParamList, 'Kunjungan'>>();
 
   const { t } = useTranslation(['visit', 'common'])
 
@@ -78,7 +78,7 @@ export const Kunjungan = () => {
 
   const formik = useFormik<KunjunganPayload>({
     initialValues: {
-      no_hp: phone,
+      phone: phone,
       keperluan: '',
       id_keperluan: '',
       photo: photo.path,
@@ -91,7 +91,7 @@ export const Kunjungan = () => {
       return new Promise(async resolve => {
         try {
           mutateAsyncKunjungan({
-            phone: values.no_hp,
+            phone: values.phone,
             visitor_id: values.visitorId,
             id_keperluan: Number(formik.values.id_keperluan),
             keperluan: formik.values.keperluan,
@@ -147,17 +147,29 @@ export const Kunjungan = () => {
                   className='rounded-lg'
                 />
               </View>
-              <View className='mb-3'>
-                <Text
-                  label={t('visit:label.phone')}
-                />
-                <Text
-                  label={formik.values.no_hp}
-                  className='py-2'
-                  variant='large'
-                  fontWeight='semi-bold'
-                />
+              <View className='flex flex-row items-center'>
+                <View className='flex-1'>
+                  <Infoplist
+                    label={t('visit:label.visitorType')}
+                    value={is_asn === true ? 'ASN' : 'Non ASN'}
+                  />
+                </View>
+                <View className='flex-1'>
+                  <Infoplist
+                    label={is_asn === true ? t('visit:label.nrk') : t('visit:label.nik')}
+                    value={uid}
+                  />
+                </View>
               </View>
+              <InputText
+                label={t('visit:label.phone')}
+                placeholder={t('visit:placeholder.phone')}
+                value={formik.values.phone}
+                onChangeText={formik.handleChange('phone')}
+                error={formik.errors.phone}
+                containerClassName='mb-4'
+                keyboardType='numeric'
+              />
               <InputSelect
                 label={t('visit:label.needs')}
                 placeholder={t('visit:placeholder.needs')}

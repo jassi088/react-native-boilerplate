@@ -2,6 +2,9 @@
   "title": "Form Buat Janji",
   "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
   "label": {
+    "visitorType": "Tipe Pengunjung",
+    "nrk": "NRK",
+    "nik": "NIK",
     "name": "Nama Lengkap",
     "phone": "No. HP Anda",
     "phoneDestination": "No. HP Tujuan",

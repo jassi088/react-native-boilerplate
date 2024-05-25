@@ -2,6 +2,9 @@
   "title": "Visit Form",
   "description": "Please stand up straight and face the camera",
   "label": {
+    "visitorType": "Visitor Type",
+    "nrk": "NRK",
+    "nik": "NIK",
     "phone": "Phone",
     "needs": "Needs",
     "other": "Needs (Other)"

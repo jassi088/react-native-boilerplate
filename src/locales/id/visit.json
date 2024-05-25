@@ -2,6 +2,9 @@
   "title": "Form Kunjungan",
   "description": "Mohon untuk tegak dengan wajah saat menghadap kamera",
   "label": {
+    "visitorType": "Tipe Pengunjung",
+    "nrk": "NRK",
+    "nik": "NIK",
     "phone": "No. HP",
     "needs": "Keperluan",
     "other": "Keperluan (Lainnya)"

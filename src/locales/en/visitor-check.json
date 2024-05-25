@@ -2,10 +2,16 @@
   "title": "Visitor Check Form",
   "description": "Please enter your phone number to check in",
   "label": {
-    "phone": "Your Phone"
+    "visitorType": "Visitor Type",
+    "phone": "Your Phone",
+    "nrk": "NRK",
+    "nik": "NIK"
   },
   "placeholder": {
-    "phone": "Enter Your Phone Number"
+    "visitorType": "Select Visitor Type",
+    "phone": "Enter Your Phone Number",
+    "nrk": "Enter NRK",
+    "nik": "Enter NIK"
   },
   "button": {
     "visitorCheck": "Check",

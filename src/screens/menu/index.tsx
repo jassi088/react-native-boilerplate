@@ -19,7 +19,7 @@ type CardProps = {
 export const Menu = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(["menu"])
-  const { params: { phone, photo, visitorId, name } } = useRoute<RouteProp<RootStackParamList, 'Menu'>>()
+  const { params: { phone, photo, visitorId, name, is_asn, uid } } = useRoute<RouteProp<RootStackParamList, 'Menu'>>()
 
   const Card = ({ label, icon, onPress }: CardProps) => (
     <TouchableOpacity
@@ -39,10 +39,19 @@ export const Menu = () => {
       />
       <View className="p-4 flex-1">
         <View className="flex-1 justify-center space-y-5">
+          <Text
+            label={t('common:label.plaseChooseMenuBelow')}
+            variant="large"
+            textAlign="center"
+            fontWeight="semi-bold"
+            className="mb-7"
+          />
           <Card
             label={t('menu:visit')}
             icon={<AntDesign name="calendar" size={40} color={colors.blue[600]} />}
             onPress={() => navigation.navigate('Kunjungan', {
+              is_asn,
+              uid,
               phone,
               photo,
               visitorId,
@@ -53,6 +62,8 @@ export const Menu = () => {
             label={t('menu:appointment')}
             icon={<Entypo name="add-to-list" size={40} color={colors.blue[600]} />}
             onPress={() => navigation.navigate('BuatJanji', {
+              is_asn,
+              uid,
               phone,
               photo,
               visitorId,

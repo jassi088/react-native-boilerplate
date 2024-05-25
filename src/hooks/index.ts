@@ -4,3 +4,4 @@ export * from './useCameraSetting';
 export * from './useRegister';
 export * from './useVisitorCheck';
 export * from './useUserInactivity';
+export * from './useVisitorCheckUid';

@@ -1,14 +1,14 @@
 import React, { useRef } from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputSelect, InputText, InputTime } from '@/components/atoms'
+import { Infoplist, InputSelect, InputText, InputTime } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFormik } from 'formik'
 import { buatJanjiSchema } from '@/yupSchemas'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation, useRegister, useVisitorCheck } from '@/hooks'
+import { useModalAlert, useModalConfirmation } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import Toast from 'react-native-toast-message'
@@ -27,7 +27,7 @@ type BuatJanjiPayload = yup.InferType<typeof buatJanjiSchema>
 export const BuatJanji = () => {
   const navigation = useNavigation()
   const { t } = useTranslation(['visit', 'common'])
-  const { params: { phone, photo, visitorId, name } } = useRoute<RouteProp<RootStackParamList, 'BuatJanji'>>();
+  const { params: { phone, photo, visitorId, name, is_asn, uid } } = useRoute<RouteProp<RootStackParamList, 'BuatJanji'>>();
 
 
   const { showModalAlert, closeModalAlert } = useModalAlert()
@@ -102,8 +102,8 @@ export const BuatJanji = () => {
   const formik = useFormik<BuatJanjiPayload>({
     initialValues: {
       name: name,
-      no_hp: phone,
-      no_hp_tujuan: '',
+      phone: phone,
+      employee_phone: '',
       id_keperluan: '',
       keperluan: '',
       jam_mulai: '',
@@ -118,11 +118,11 @@ export const BuatJanji = () => {
       return new Promise(async resolve => {
         try {
           await mutateAsyncAppointment({
-            phone: values.no_hp,
+            phone: values.phone,
             photo: values.photo as string,
             name: values!.name,
             visitorId: values!.visitorId,
-            employee_phone: values.no_hp_tujuan,
+            employee_phone: values.employee_phone,
             start_on: dayjs(values.jam_mulai).toDate(),
             end_on: dayjs(values.jam_selesai).toDate(),
             id_keperluan: Number(values.id_keperluan),
@@ -172,17 +172,29 @@ export const BuatJanji = () => {
                   className='rounded-lg'
                 />
               </View>
-              <View className='mb-3'>
-                <Text
-                  label={t('appointment:label.phone')}
-                />
-                <Text
-                  label={formik.values.no_hp}
-                  className='py-2'
-                  variant='large'
-                  fontWeight='semi-bold'
-                />
+              <View className='flex flex-row items-center'>
+                <View className='flex-1'>
+                  <Infoplist
+                    label={t('appointment:label.visitorType')}
+                    value={is_asn === true ? 'ASN' : 'Non ASN'}
+                  />
+                </View>
+                <View className='flex-1'>
+                  <Infoplist
+                    label={is_asn === true ? t('appointment:label.nrk') : t('appointment:label.nik')}
+                    value={uid}
+                  />
+                </View>
               </View>
+              <InputText
+                label={t('appointment:label.phone')}
+                placeholder={t('appointment:placeholder.phone')}
+                value={formik.values.phone}
+                onChangeText={formik.handleChange('phone')}
+                error={formik.errors.phone}
+                containerClassName='mb-4'
+                keyboardType='numeric'
+              />
               <InputText
                 label={t('appointment:label.name')}
                 placeholder={t('appointment:placeholder.name')}
@@ -195,9 +207,9 @@ export const BuatJanji = () => {
               <InputText
                 label={t('appointment:label.phoneDestination')}
                 placeholder={t('appointment:placeholder.phoneDestination')}
-                value={formik.values.no_hp_tujuan}
-                onChangeText={formik.handleChange('no_hp_tujuan')}
-                error={formik.errors.no_hp_tujuan}
+                value={formik.values.employee_phone}
+                onChangeText={formik.handleChange('employee_phone')}
+                error={formik.errors.employee_phone}
                 containerClassName='mb-4'
                 keyboardType='numeric'
               />
@@ -226,7 +238,7 @@ export const BuatJanji = () => {
                   value={formik.values.keperluan as string}
                   onChangeText={formik.handleChange('keperluan')}
                   error={formik.errors.keperluan}
-                  containerClassName='mb-4'
+                  containerClassName='mt-4'
                 />
               )}
               <View className={cn('flex flex-row items-center', 'mt-5')}>

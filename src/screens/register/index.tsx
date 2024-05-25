@@ -24,7 +24,7 @@ type RegisterPayload = yup.InferType<typeof registerSchema>
 
 export const Register = () => {
   const navigation = useNavigation()
-  const { params: { photo, phone } } = useRoute<RouteProp<RootStackParamList, 'Register'>>();
+  const { params: { photo, is_asn, uid } } = useRoute<RouteProp<RootStackParamList, 'Register'>>();
 
   const { t } = useTranslation(['register', 'common'])
 
@@ -66,7 +66,9 @@ export const Register = () => {
       }
 
       navigation.navigate('Menu', {
-        phone: formik.values.no_hp,
+        is_asn: response.data!.is_asn === 0 ? false : true,
+        uid: response.data!.is_asn ? String(response.data!.nrk) : String(response.data!.nik),
+        phone: formik.values.phone,
         photo,
         visitorId: response.data!.visitorId,
         name: response.data!.name
@@ -111,7 +113,7 @@ export const Register = () => {
         onPress: () => {
           closeModalAlert()
           mutateAsyncVisitorCheck({
-            phone: formik.values.no_hp,
+            phone: formik.values.phone,
             photo: photo.path
           })
         }
@@ -131,12 +133,12 @@ export const Register = () => {
 
   const formik = useFormik<RegisterPayload>({
     initialValues: {
-      tipe_pengunjung: '',
-      no_hp: phone,
+      visitorType: is_asn ? 'asn' : 'non-asn',
+      phone: '',
       email: '',
       nama: '',
-      nik: '',
-      nrk: '',
+      nik: !is_asn ? uid : '',
+      nrk: is_asn ? uid : '',
     },
     validationSchema: registerSchema,
     validateOnChange: false,
@@ -146,9 +148,9 @@ export const Register = () => {
         try {
           await mutateAsyncRegister({
             ...values,
-            phone: values.no_hp,
+            phone: values.phone,
             name: values.nama,
-            is_asn: values.tipe_pengunjung === 'asn',
+            is_asn: values.visitorType === 'asn',
             photo: photo.path,
           } as unknown as PostRegisterInterface)
         } catch (error) {
@@ -184,27 +186,18 @@ export const Register = () => {
                   className='rounded-lg'
                 />
               </View>
-              <InputText
-                label={t('register:label.phone')}
-                placeholder={t('register:placeholder.phone')}
-                value={formik.values.no_hp}
-                onChangeText={formik.handleChange('no_hp')}
-                error={formik.errors.no_hp}
-                containerClassName='mb-4'
-                keyboardType='numeric'
-              />
               <InputSelect
                 label={t('register:label.visitorType')}
                 placeholder={t('register:placeholder.visitorType')}
-                value={formik.values.tipe_pengunjung as string}
-                onChange={(data) => formik.setFieldValue('tipe_pengunjung', data.value)}
+                value={formik.values.visitorType as string}
+                onChange={(data) => formik.setFieldValue('visitorType', data.value)}
                 data={TIPE_PENGUNJUNG}
-                error={formik.errors.tipe_pengunjung}
+                error={formik.errors.visitorType}
                 containerClassName='mb-4'
               />
-              {formik.values.tipe_pengunjung && (
+              {formik.values.visitorType && (
                 <View>
-                  {formik.values.tipe_pengunjung === 'asn' && (
+                  {formik.values.visitorType === 'asn' && (
                     <InputText
                       label={t('register:label.nrk')}
                       placeholder={t('register:placeholder.nrk')}
@@ -215,7 +208,7 @@ export const Register = () => {
                       keyboardType="numeric"
                     />
                   )}
-                  {formik.values.tipe_pengunjung === 'non-asn' && (
+                  {formik.values.visitorType === 'non-asn' && (
                     <InputText
                       label={t('register:label.nik')}
                       placeholder={t('register:placeholder.nik')}
@@ -233,6 +226,15 @@ export const Register = () => {
                     onChangeText={formik.handleChange('nama')}
                     error={formik.errors.nama}
                     containerClassName='mb-4'
+                  />
+                  <InputText
+                    label={t('register:label.phone')}
+                    placeholder={t('register:placeholder.phone')}
+                    value={formik.values.phone}
+                    onChangeText={formik.handleChange('phone')}
+                    error={formik.errors.phone}
+                    containerClassName='mb-4'
+                    keyboardType='numeric'
                   />
                   <InputText
                     label={t('register:label.email')}

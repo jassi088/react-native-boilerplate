@@ -3,28 +3,35 @@ import { PhotoFile } from 'react-native-vision-camera';
 export type RootStackParamList = {
   Splash: undefined;
   Register: {
-    phone: string;
+    is_asn: boolean;
+    uid: string;
     photo: PhotoFile;
   };
   Home: undefined;
   Kunjungan: {
-    photo: PhotoFile;
+    is_asn: boolean;
+    uid: string;
     phone: string;
     visitorId: string;
+    photo: PhotoFile;
   };
   BuatJanji: {
-    photo: PhotoFile;
+    is_asn: boolean;
+    uid: string;
     phone: string;
     visitorId: string;
     name: string;
+    photo: PhotoFile;
   };
   Setting: undefined;
   Screensaver: undefined;
   Menu: {
+    is_asn: boolean;
+    uid: string;
     phone: string;
-    photo: PhotoFile;
     visitorId: string;
     name?: string;
+    photo: PhotoFile;
   };
   VisitorCheck: {
     photo: PhotoFile;

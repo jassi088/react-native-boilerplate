@@ -2,10 +2,16 @@
   "title": "Form Cek Pengunjung",
   "description": "Silahkan masukkan No. HP Anda",
   "label": {
-    "phone": "No. HP"
+    "visitorType": "Tipe Pengunjung",
+    "phone": "No. HP",
+    "nrk": "NRK",
+    "nik": "NIK"
   },
   "placeholder": {
-    "phone": "Masukkan No. HP"
+    "visitorType": "Select Tipe Pengunjung",
+    "phone": "Masukkan No. HP",
+    "nrk": "Masukkan NRK",
+    "nik": "Masukkan NIK"
   },
   "button": {
     "visitorCheck": "Check",

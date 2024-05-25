@@ -1,13 +1,13 @@
 import React from 'react'
 import { Image, ScrollView, View } from 'react-native'
 import { Text } from '@/components/atoms/text'
-import { InputText } from '@/components/atoms'
+import { InputSelect, InputText } from '@/components/atoms'
 import { ActionButton } from '@/components/molecules'
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFormik } from 'formik'
 import * as yup from 'yup';
-import { useModalAlert, useModalConfirmation, useRegister, useVisitorCheck } from '@/hooks'
+import { useModalAlert, useModalConfirmation, useVisitorCheckUid } from '@/hooks'
 import { Loader } from '@/components/atoms/loader'
 import { Header } from '@/components/organism'
 import Toast from 'react-native-toast-message'
@@ -15,6 +15,7 @@ import { useBackHandler } from '@react-native-community/hooks'
 import { useTranslation } from 'react-i18next'
 import { RootStackParamList } from '@/routes/index.type'
 import { visitorCheckSchema } from '@/yupSchemas/visitor-check'
+import { TIPE_PENGUNJUNG } from '@/constants/tipe-pengunjung'
 
 type VisitorCheckPayload = yup.InferType<typeof visitorCheckSchema>
 
@@ -27,7 +28,7 @@ export const VisitorCheck = () => {
   const { showModalAlert, closeModalAlert } = useModalAlert()
   const { showModalConfirmation, closeModalConfirmation } = useModalConfirmation()
 
-  const { mutateAsync: mutateAsyncVisitorCheck } = useVisitorCheck({
+  const { mutateAsync: mutateAsyncVisitorCheckUid } = useVisitorCheckUid({
     onSuccess: (response) => {
       console.log('[VisitorCheck][Visitor Check] Response', response);
 
@@ -40,7 +41,8 @@ export const VisitorCheck = () => {
             closeModalConfirmation()
             formik.resetForm()
             navigation.navigate('Register', {
-              phone: formik.values.no_hp,
+              is_asn: formik.values.visitorType === 'asn',
+              uid: formik.values.uid,
               photo,
             })
           },
@@ -48,11 +50,15 @@ export const VisitorCheck = () => {
         })
       }
 
+      formik.resetForm()
+
       navigation.navigate('Menu', {
-        phone: formik.values.no_hp,
-        photo,
+        is_asn: formik.values.visitorType === 'asn',
+        uid: formik.values.uid,
+        phone: response.data!.phone,
         visitorId: response.data!.visitorId,
-        name: response.data!.name
+        name: response.data!.name,
+        photo,
       })
     },
     onError: (error) => {
@@ -91,7 +97,8 @@ export const VisitorCheck = () => {
 
   const formik = useFormik<VisitorCheckPayload>({
     initialValues: {
-      no_hp: '',
+      visitorType: '',
+      uid: '',
     },
     validationSchema: visitorCheckSchema,
     validateOnChange: false,
@@ -99,8 +106,9 @@ export const VisitorCheck = () => {
     onSubmit: (values) => {
       return new Promise(async resolve => {
         try {
-          await mutateAsyncVisitorCheck({
-            phone: values.no_hp,
+          await mutateAsyncVisitorCheckUid({
+            is_asn: values.visitorType === 'asn',
+            uid: values.uid,
             photo: photo.path
           })
         } catch (error) {
@@ -114,19 +122,6 @@ export const VisitorCheck = () => {
       })
     }
   })
-
-  const onSubmit = async () => {
-    try {
-
-      formik.handleSubmit()
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Gagal untuk registrasi',
-        text2: (error as Error).message || 'Terjadi kesaalahan'
-      })
-    }
-  }
 
   return (
     <>
@@ -146,12 +141,21 @@ export const VisitorCheck = () => {
                   className='rounded-lg'
                 />
               </View>
+              <InputSelect
+                label={t('visitorCheck:label.visitorType')}
+                placeholder={t('visitorCheck:placeholder.visitorType')}
+                value={formik.values.visitorType}
+                onChange={(data) => formik.setFieldValue('visitorType', data.value)}
+                data={TIPE_PENGUNJUNG}
+                error={formik.errors.visitorType}
+                containerClassName='mb-4'
+              />
               <InputText
-                label={t('visitorCheck:label.phone')}
-                placeholder={t('visitorCheck:placeholder.phone')}
-                value={formik.values.no_hp}
-                onChangeText={formik.handleChange('no_hp')}
-                error={formik.errors.no_hp}
+                label={formik.values.visitorType === 'asn' ? t('visitorCheck:label.nrk') : t('visitorCheck:label.nik')}
+                placeholder={formik.values.visitorType === 'asn' ? t('visitorCheck:placeholder.nrk') : t('visitorCheck:placeholder.nik')}
+                value={formik.values.uid}
+                onChangeText={formik.handleChange('uid')}
+                error={formik.errors.uid}
                 containerClassName='mb-4'
                 keyboardType='numeric'
               />

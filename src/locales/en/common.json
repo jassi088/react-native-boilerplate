@@ -7,7 +7,8 @@
   },
   "label": {
     "clickAnywhereToStart": "Click anywhere to start",
-    "start": "start"
+    "start": "start",
+    "plaseChooseMenuBelow": "Please choose a menu below"
   },
   "camera": {
     "failed": "Failed",
