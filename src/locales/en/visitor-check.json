@@ -1,6 +1,6 @@
 {
   "title": "Visitor Check Form",
-  "description": "Please enter your phone number to check in",
+  "description": "Please enter your NIK/NRK to check in",
   "label": {
     "visitorType": "Visitor Type",
     "phone": "Your Phone",

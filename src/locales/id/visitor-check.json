@@ -1,6 +1,6 @@
 {
   "title": "Form Cek Pengunjung",
-  "description": "Silahkan masukkan No. HP Anda",
+  "description": "Silahkan masukkan NIK/NRK Anda",
   "label": {
     "visitorType": "Tipe Pengunjung",
     "phone": "No. HP",
