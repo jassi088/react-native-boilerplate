@@ -27,8 +27,8 @@
   },
   "alert": {
     "notRegistered": {
-      "title": "Phone not registered",
-      "message": "Phone number is not registered, please register"
+      "title": "NIK/NRK not registered",
+      "message": "NIK/NRK is not registered, please register"
     }
   }
 }

@@ -27,8 +27,8 @@
   },
   "alert": {
     "notRegistered": {
-      "title": "No. HP tidak terdaftar",
-      "message": "No. HP tidak terdaftar, silahkan registrasi terlebih dahulu"
+      "title": "NIK/NRK tidak terdaftar",
+      "message": "NIK/NRK tidak terdaftar, silahkan registrasi terlebih dahulu"
     }
   }
 }
